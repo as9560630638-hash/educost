@@ -1,5 +1,5 @@
 /* ============================================================
-   ShikshaPortal — Interactive Features
+   EduQuesto — Interactive Features
    ============================================================ */
 
 (function () {
@@ -635,6 +635,6 @@
   });
 
   /* Expose showModal globally */
-  window.ShikshaPortal = { showModal, hideModal, showToast };
+  window.EduQuesto = { showModal, hideModal, showToast };
 
 })();
