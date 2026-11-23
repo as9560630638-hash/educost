@@ -572,7 +572,7 @@
     Object.assign(toast.style, {
       position: 'fixed', bottom: '90px', left: '50%',
       transform: 'translateX(-50%)',
-      background: '#0f172a', color: '#f8fafc',
+      background: '#1a1a1a', color: '#f5ecd7',
       padding: '12px 24px', borderRadius: '8px',
       fontSize: '14px', fontWeight: '600',
       boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
