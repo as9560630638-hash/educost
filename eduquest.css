@@ -140,7 +140,7 @@ input, select, textarea { font-family: inherit; }
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+  box-shadow: 0 2px 8px rgba(28,20,16,0.06);
 }
 .nav-inner {
   display: flex;
@@ -303,7 +303,7 @@ input, select, textarea { font-family: inherit; }
 .drawer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(15,23,42,0.6);
+  background: rgba(28,20,16,0.6);
   backdrop-filter: blur(4px);
 }
 .drawer-panel {
@@ -494,7 +494,7 @@ footer {
   border-radius: 16px;
   display: flex; align-items: center;
   padding: 8px 10px 8px 20px;
-  box-shadow: 0 16px 36px -8px rgba(15,23,42,0.18), 0 0 0 1px var(--border);
+  box-shadow: 0 16px 36px -8px rgba(28,20,16,0.18), 0 0 0 1px var(--border);
   position: relative;
 }
 .search-icon-box { color: var(--orange); display: flex; align-items: center; margin-right: 14px; }
@@ -520,7 +520,7 @@ footer {
   top: calc(100% + 8px); left: 0; right: 0;
   background: var(--white);
   border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(15,23,42,0.18), 0 0 0 1px var(--border);
+  box-shadow: 0 20px 40px rgba(28,20,16,0.18), 0 0 0 1px var(--border);
   padding: 12px;
   display: none;
   z-index: 200;
@@ -550,7 +550,7 @@ footer {
 .eduquest-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15,23,42,0.75);
+  background: rgba(28,20,16,0.75);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: none;
@@ -738,14 +738,14 @@ footer {
   background: var(--white);
   border-radius: 18px;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 16px -2px rgba(15,23,42,0.05);
+  box-shadow: 0 4px 16px -2px rgba(28,20,16,0.05);
   overflow: hidden;
   transition: all 0.28s ease;
   margin-bottom: 20px;
 }
 .college-search-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px -4px rgba(15,23,42,0.1);
+  box-shadow: 0 16px 32px -4px rgba(28,20,16,0.1);
   border-color: var(--border-mid);
 }
 .card-hero-banner {
@@ -830,7 +830,7 @@ footer {
 .eduquest-review-card {
   background: var(--white); border-radius: 16px;
   border: 1px solid var(--border); padding: 22px;
-  box-shadow: 0 4px 14px rgba(15,23,42,0.04);
+  box-shadow: 0 4px 14px rgba(28,20,16,0.04);
 }
 .review-header {
   display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
@@ -884,7 +884,7 @@ footer {
   background: var(--navy-dark); color: var(--white);
   border-radius: var(--radius-pill); padding: 8px 12px 8px 18px;
   display: flex; align-items: center; gap: 14px;
-  box-shadow: 0 16px 36px rgba(15,23,42,0.35), 0 0 0 1px rgba(255,255,255,0.1);
+  box-shadow: 0 16px 36px rgba(28,20,16,0.35), 0 0 0 1px rgba(255,255,255,0.1);
   transition: transform 0.25s ease;
 }
 .counsel-pill-card:hover { transform: translateY(-3px); }
@@ -902,12 +902,12 @@ footer {
 .counsel-title { font-size: 12.5px; font-weight: 700; color: #f8fafc; }
 .counsel-subtitle { font-size: 11px; color: var(--text-subtle); }
 .counsel-call-btn {
-  background: #2a1811; border: 1px solid #334155;
+  background: #2a1811; border: 1px solid #5a3e32;
   width: 38px; height: 38px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; cursor: pointer; transition: background 0.2s;
 }
-.counsel-call-btn:hover { background: #334155; }
+.counsel-call-btn:hover { background: #5a3e32; }
 .counsel-chat-btn {
   background: var(--orange); color: var(--white); border: none;
   border-radius: var(--radius-pill); padding: 9px 18px;
@@ -955,7 +955,7 @@ footer {
 .btn-compare-now:hover { background: var(--orange-hover); }
 .btn-compare-clear {
   padding: 10px 16px; background: transparent; color: #9b8574;
-  border: 1px solid #334155; border-radius: var(--radius-sm);
+  border: 1px solid #5a3e32; border-radius: var(--radius-sm);
   font-size: 13px; font-weight: 600; cursor: pointer;
   transition: all 0.2s;
 }
@@ -995,7 +995,7 @@ footer {
   font-family: var(--font-head);
   font-size: clamp(32px, 5vw, 54px);
   font-weight: 800;
-  color: var(--white);
+  color: #fdf8f1;
   line-height: 1.15;
   margin-bottom: 16px;
   max-width: 700px;
@@ -1003,7 +1003,7 @@ footer {
 .hero-title span { color: var(--orange-mid); }
 .hero-sub {
   font-size: clamp(15px, 2vw, 18px);
-  color: #9b8574;
+  color: #c4ab97;
   max-width: 580px;
   margin-bottom: 44px;
   line-height: 1.65;
@@ -1020,7 +1020,7 @@ footer {
   font-size: 26px; font-weight: 800;
   color: var(--white);
 }
-.hero-stat-label { font-size: 12px; color: #9b8574; font-weight: 500; }
+.hero-stat-label { font-size: 12px; color: #c4ab97; font-weight: 500; }
 
 /* ============================================================
    STREAM GRID (Homepage)
@@ -1688,7 +1688,7 @@ footer {
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   box-shadow: 0 1px 0 rgba(0,0,0,0.05),
-              0 8px 32px rgba(15,23,42,0.08);
+              0 8px 32px rgba(28,20,16,0.08);
   border-bottom-color: rgba(226,232,240,0.6);
 }
 
@@ -1716,7 +1716,7 @@ footer {
 .mega-menu {
   backdrop-filter: blur(16px) saturate(1.5);
   background: rgba(255,255,255,0.95) !important;
-  box-shadow: 0 20px 48px rgba(15,23,42,0.14),
+  box-shadow: 0 20px 48px rgba(28,20,16,0.14),
               0 0 0 1px rgba(255,255,255,0.80) inset,
               0 1px 0 rgba(226,232,240,0.6) !important;
 }
@@ -1760,7 +1760,7 @@ footer {
 .omni-search-box:focus-within {
   box-shadow:
     0 0 0 3px rgba(27,67,50,0.18),
-    0 16px 36px -8px rgba(15,23,42,0.18),
+    0 16px 36px -8px rgba(28,20,16,0.18),
     0 0 0 1px rgba(27,67,50,0.35) !important;
 }
 .search-icon-box {
@@ -1785,7 +1785,7 @@ footer {
 .stream-card-item:hover { will-change: transform; }
 .stream-card-item:hover {
   box-shadow:
-    0 24px 48px rgba(15,23,42,0.12),
+    0 24px 48px rgba(28,20,16,0.12),
     0 6px 14px rgba(27,67,50,0.09) !important;
   border-color: var(--orange) !important;
 }
@@ -1795,7 +1795,7 @@ footer {
 }
 .stream-card-item:hover .stream-icon-box {
   transform: scale(1.14) translateY(-3px);
-  box-shadow: 0 8px 20px rgba(15,23,42,0.12);
+  box-shadow: 0 8px 20px rgba(28,20,16,0.12);
 }
 .stream-exam-tag {
   transition: background 0.25s, color 0.25s,
@@ -1827,8 +1827,8 @@ footer {
 .college-search-card:hover {
   transform: translateY(-8px) scale(1.012) !important;
   box-shadow:
-    0 28px 52px rgba(15,23,42,0.14),
-    0 8px 20px rgba(15,23,42,0.07) !important;
+    0 28px 52px rgba(28,20,16,0.14),
+    0 8px 20px rgba(28,20,16,0.07) !important;
   border-color: rgba(27,67,50,0.28) !important;
 }
 .college-crest-box {
@@ -1966,8 +1966,8 @@ footer {
 .eduquest-review-card:hover {
   transform: translateY(-6px) !important;
   box-shadow:
-    0 20px 40px rgba(15,23,42,0.11),
-    0 4px 12px rgba(15,23,42,0.06) !important;
+    0 20px 40px rgba(28,20,16,0.11),
+    0 4px 12px rgba(28,20,16,0.06) !important;
   border-color: rgba(27,67,50,0.22) !important;
 }
 
@@ -2150,7 +2150,7 @@ footer {
   font-weight: 900 !important;
   letter-spacing: -1.5px;
   line-height: 1 !important;
-  background: linear-gradient(135deg, #fff 55%, var(--orange-mid) 100%);
+  background: linear-gradient(135deg, #fdf8f1 55%, var(--orange-mid) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
