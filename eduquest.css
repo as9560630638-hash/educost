@@ -979,16 +979,19 @@ footer {
 }
 .hero-layout {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 40px;
+  min-height: 520px;
 }
 .hero-left {
-  flex: 0 0 55%;
+  flex: 0 0 52%;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .hero-right {
   flex: 1;
-  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
