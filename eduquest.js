@@ -248,9 +248,24 @@
     </a>`;
   }
 
+  function heroNavigate() {
+    const q      = searchInput ? searchInput.value.trim() : '';
+    const active = document.querySelector('.chip-btn.active');
+    const stream = active ? active.dataset.stream : 'all';
+    const params = new URLSearchParams();
+    if (q)              params.set('q', q);
+    if (stream !== 'all') params.set('stream', stream);
+    const qs = params.toString();
+    window.location.href = 'colleges.html' + (qs ? '?' + qs : '');
+  }
+
+  const heroSearchBtn = $('#heroSearchBtn');
+  if (heroSearchBtn) heroSearchBtn.addEventListener('click', heroNavigate);
+
   if (searchInput) {
     searchInput.addEventListener('input', () => renderDropdown(searchInput.value));
     searchInput.addEventListener('focus', () => { if (searchInput.value) renderDropdown(searchInput.value); });
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); heroNavigate(); } });
   }
   document.addEventListener('click', e => {
     if (!e.target.closest('.omni-search-box') && searchDropdown) {
@@ -427,6 +442,31 @@
       });
       sorted.forEach(c => container.appendChild(c));
     });
+  }
+
+  /* ============================================================
+     URL PARAM → AUTO-FILTER ON PAGE LOAD (colleges.html)
+     ============================================================ */
+  if (collegeCards.length) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlQ      = urlParams.get('q');
+    const urlStream = urlParams.get('stream');
+
+    if (urlQ && filterNameInput) {
+      filterNameInput.value = urlQ;
+    }
+
+    if (urlStream && urlStream !== 'all') {
+      const matchCb = filterCheckboxes.find(c => c.value.toLowerCase() === urlStream.toLowerCase());
+      if (matchCb) matchCb.checked = true;
+    }
+
+    if (urlQ || urlStream) {
+      runFilters();
+      /* Scroll past the filter sidebar to the results */
+      const resultsArea = $('#collegeListingsContainer');
+      if (resultsArea) setTimeout(() => resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+    }
   }
 
   /* ============================================================
