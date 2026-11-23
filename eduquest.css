@@ -992,9 +992,17 @@ footer {
 }
 .hero-right {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  overflow: visible;
+}
+.hero-right model-viewer {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100% + 120px);
+  min-height: 640px;
 }
 model-viewer,
 model-viewer:focus,
