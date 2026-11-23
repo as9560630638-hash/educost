@@ -686,7 +686,7 @@
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
       card.style.transition = 'none';
-      card.style.transform = `perspective(700px) rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg) translateY(-8px)`;
+      card.style.transform = `perspective(700px) rotateX(${(-y * 14).toFixed(2)}deg) rotateY(${(x * 14).toFixed(2)}deg) translateY(-8px)`;
     });
     card.addEventListener('mouseleave', () => {
       card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s, border-color 0.25s';
@@ -707,7 +707,7 @@
         const target = parseFloat(match[1]);
         const suffix = match[2];
         const isInt = Number.isInteger(target);
-        const duration = 1400;
+        const duration = 2400;
         const startTime = performance.now();
         const step = now => {
           const progress = Math.min((now - startTime) / duration, 1);
