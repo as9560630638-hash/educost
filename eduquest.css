@@ -1,5 +1,5 @@
 /* ============================================================
-   EduQuesto — Global Design System
+   EduQuest — Global Design System
    Single unified stylesheet for all pages
    ============================================================ */
 
@@ -457,7 +457,7 @@ footer {
 /* ============================================================
    OMNISEARCH HERO COMPONENT
    ============================================================ */
-.shiksha-search-wrapper {
+.eduquest-search-wrapper {
   max-width: 880px;
   margin: 0 auto;
   position: relative;
@@ -544,7 +544,7 @@ footer {
 /* ============================================================
    MULTI-STEP LEAD MODAL
    ============================================================ */
-.shiksha-modal-overlay {
+.eduquest-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15,23,42,0.75);
@@ -555,9 +555,9 @@ footer {
   justify-content: center;
   padding: 16px;
 }
-.shiksha-modal-overlay.active { display: flex; }
+.eduquest-modal-overlay.active { display: flex; }
 
-.shiksha-modal-container {
+.eduquest-modal-container {
   background: var(--white);
   width: 100%;
   max-width: 480px;
@@ -824,7 +824,7 @@ footer {
 /* ============================================================
    REVIEW CARD
    ============================================================ */
-.shiksha-review-card {
+.eduquest-review-card {
   background: var(--white); border-radius: 16px;
   border: 1px solid var(--border); padding: 22px;
   box-shadow: 0 4px 14px rgba(15,23,42,0.04);
@@ -874,7 +874,7 @@ footer {
 /* ============================================================
    FLOATING COUNSELLING BAR
    ============================================================ */
-.shiksha-floating-counsel {
+.eduquest-floating-counsel {
   position: fixed; bottom: 24px; right: 24px; z-index: 900;
 }
 .counsel-pill-card {
@@ -1641,7 +1641,7 @@ footer {
   .footer-grid { grid-template-columns: 1fr; }
   .counsel-form-card { padding: 24px; }
   .omni-submit-btn span { display: none; }
-  .shiksha-floating-counsel .counsel-text-col { display: none; }
+  .eduquest-floating-counsel .counsel-text-col { display: none; }
   .exam-card { grid-template-columns: auto 1fr; }
   .exam-dates, .exam-card-actions { grid-column: 2; }
   .top-bar-right { display: none; }
@@ -1661,7 +1661,7 @@ footer {
   .placement-stats-banner { grid-template-columns: 1fr 1fr; }
   .recruiters-grid { grid-template-columns: repeat(2,1fr); }
   .modal-actions-row { flex-direction: column; }
-  .shiksha-floating-counsel { bottom: 16px; right: 16px; }
+  .eduquest-floating-counsel { bottom: 16px; right: 16px; }
   .stream-select-grid { grid-template-columns: 1fr; }
   .hero-badge span { font-size: 11px; }
 }

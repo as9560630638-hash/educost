@@ -1,5 +1,5 @@
 /* ============================================================
-   EduQuesto — Interactive Features
+   EduQuest — Interactive Features
    ============================================================ */
 
 (function () {
@@ -635,6 +635,6 @@
   });
 
   /* Expose showModal globally */
-  window.EduQuesto = { showModal, hideModal, showToast };
+  window.EduQuest = { showModal, hideModal, showToast };
 
 })();
