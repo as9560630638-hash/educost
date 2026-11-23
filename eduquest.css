@@ -993,10 +993,8 @@ footer {
 .hero-right {
   flex: 1;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding-top: 10px;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
 }
 .hero-section::before {
   content: "";
