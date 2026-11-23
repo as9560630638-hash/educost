@@ -618,14 +618,11 @@
      STICKY HEADER SCROLL SHADOW
      ============================================================ */
   const mainNav = $('#main-nav');
-  window.addEventListener('scroll', () => {
-    if (!mainNav) return;
-    if (window.scrollY > 10) {
-      mainNav.style.boxShadow = '0 4px 16px rgba(15,23,42,0.1)';
-    } else {
-      mainNav.style.boxShadow = '0 2px 8px rgba(15,23,42,0.06)';
-    }
-  }, { passive: true });
+  if (mainNav) {
+    const syncScrolled = () => mainNav.classList.toggle('eq-scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', syncScrolled, { passive: true });
+    syncScrolled();
+  }
 
   /* ============================================================
      COMPARE PAGE — ADD COLLEGE SLOT
@@ -636,5 +633,111 @@
 
   /* Expose showModal globally */
   window.EduQuest = { showModal, hideModal, showToast };
+
+})();
+
+/* ============================================================
+   ENHANCEMENT LAYER — Scroll Reveals · 3D Tilt · Counter
+   ============================================================ */
+(function () {
+
+  /* ── 1. Scroll-reveal: auto-tag and observe ── */
+  const revealSelectors = [
+    '.stream-grid .stream-card-item',
+    '.featured-grid .college-search-card',
+    '.reviews-grid .shiksha-review-card',
+    '.reviews-grid .eduquest-review-card',
+    '.exams-grid .exam-card',
+    '.section-header',
+    '.counsel-feature-card',
+    '.counsel-step-card',
+    '.college-detail-stat',
+    '.compare-college-col',
+  ];
+
+  const revealTargets = [];
+  revealSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('eq-reveal');
+      const mod = revealTargets.length % 4;
+      if (mod === 1) el.classList.add('eq-reveal-delay-1');
+      else if (mod === 2) el.classList.add('eq-reveal-delay-2');
+      else if (mod === 3) el.classList.add('eq-reveal-delay-3');
+      revealTargets.push(el);
+    });
+  });
+
+  if (revealTargets.length) {
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    revealTargets.forEach(el => revealObs.observe(el));
+  }
+
+  /* ── 2. 3D mouse-tilt for stream cards ── */
+  document.querySelectorAll('.stream-card-item').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transition = 'none';
+      card.style.transform = `perspective(700px) rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg) translateY(-8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s, border-color 0.25s';
+      card.style.transform = '';
+    });
+  });
+
+  /* ── 3. Hero stats number counter ── */
+  const statEls = document.querySelectorAll('.hero-stat-num');
+  if (statEls.length) {
+    const countObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const raw = el.textContent.trim();
+        const match = raw.match(/^([\d.]+)(.*)/);
+        if (!match) return;
+        const target = parseFloat(match[1]);
+        const suffix = match[2];
+        const isInt = Number.isInteger(target);
+        const duration = 1400;
+        const startTime = performance.now();
+        const step = now => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const val = isInt ? Math.round(target * eased) : (target * eased).toFixed(1);
+          el.textContent = val + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        countObs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    statEls.forEach(el => countObs.observe(el));
+  }
+
+  /* ── 4. Button tactile press feedback ── */
+  const pressSelectors = [
+    '.btn-nav-primary', '.omni-submit-btn', '.btn-exam-action:not(.outline)',
+    '.counsel-submit-btn', '.btn-primary-modal', '.footer-submit-btn',
+    '.btn-card-primary', '.btn-compare-now', '.drawer-btn',
+  ].join(',');
+  document.querySelectorAll(pressSelectors).forEach(btn => {
+    btn.addEventListener('pointerdown', () => {
+      btn.style.transform = 'translateY(1px) scale(0.97)';
+    });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(evt => {
+      btn.addEventListener(evt, () => {
+        btn.style.transform = '';
+      });
+    });
+  });
 
 })();

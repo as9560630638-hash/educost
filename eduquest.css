@@ -1665,3 +1665,473 @@ footer {
   .stream-select-grid { grid-template-columns: 1fr; }
   .hero-badge span { font-size: 11px; }
 }
+
+/* ============================================================
+   EDUQUEST — UIVERSE ENHANCEMENT LAYER v1
+   Emil Motion easing: cubic-bezier(0.16, 1, 0.3, 1) throughout
+   Palette: orange #ea580c, navy #0a192f — NO neon, NO pure gradients
+   ============================================================ */
+
+/* ──────────────────────────────────────────────
+   1. NAVBAR — LIQUID GLASS SCROLL STATE
+   Source: 01_liquid_glass backdrop-filter pattern
+   ────────────────────────────────────────────── */
+#main-nav {
+  transition: background 0.35s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+#main-nav.eq-scrolled {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05),
+              0 8px 32px rgba(15,23,42,0.08);
+  border-bottom-color: rgba(226,232,240,0.6);
+}
+
+/* Nav link — animated underline sweep */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 14px; right: 14px;
+  height: 2px;
+  background: var(--orange);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.22s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Mega menu — frosted glass */
+.mega-menu {
+  backdrop-filter: blur(16px) saturate(1.5);
+  background: rgba(255,255,255,0.95) !important;
+  box-shadow: 0 20px 48px rgba(15,23,42,0.14),
+              0 0 0 1px rgba(255,255,255,0.80) inset,
+              0 1px 0 rgba(226,232,240,0.6) !important;
+}
+
+/* ──────────────────────────────────────────────
+   2. HERO — SECOND AMBIENT ORB (warm orange)
+   ────────────────────────────────────────────── */
+.hero-section::before {
+  background:
+    radial-gradient(ellipse at 10% 85%, rgba(234,88,12,0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(2,132,199,0.12) 0%, transparent 65%) !important;
+}
+
+.hero-badge span {
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.25s;
+}
+.hero-badge span:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(234,88,12,0.25);
+}
+
+/* Hero stats — slight hover pop */
+.hero-stat {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.hero-stat:hover {
+  transform: translateY(-2px);
+}
+.hero-stat-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ──────────────────────────────────────────────
+   3. SEARCH BAR — ANIMATED FOCUS GLOW
+   Source: 07_fancy_switches_and_inputs focus ring pattern
+   ────────────────────────────────────────────── */
+.omni-search-box {
+  transition: box-shadow 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.omni-search-box:focus-within {
+  box-shadow:
+    0 0 0 3px rgba(234,88,12,0.18),
+    0 16px 36px -8px rgba(15,23,42,0.18),
+    0 0 0 1px rgba(234,88,12,0.35) !important;
+}
+.search-icon-box {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.omni-search-box:focus-within .search-icon-box {
+  transform: rotate(-12deg) scale(1.1) !important;
+  color: var(--orange-hover) !important;
+}
+
+/* ──────────────────────────────────────────────
+   4. STREAM CARDS — 3D PERSPECTIVE + MOUSE TILT
+   Source: 02_3d_cards/moody-moth-91 — preserve-3d technique
+   JS pairs with this for per-card mouse tracking
+   ────────────────────────────────────────────── */
+.stream-card-item {
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.25s !important;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.stream-card-item:hover {
+  box-shadow:
+    0 24px 48px rgba(15,23,42,0.12),
+    0 6px 14px rgba(234,88,12,0.09) !important;
+  border-color: var(--orange) !important;
+}
+.stream-icon-box {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.4s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.stream-card-item:hover .stream-icon-box {
+  transform: scale(1.14) translateY(-3px);
+  box-shadow: 0 8px 20px rgba(15,23,42,0.12);
+}
+.stream-exam-tag {
+  transition: background 0.25s, color 0.25s,
+              transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.stream-card-item:hover .stream-exam-tag {
+  background: var(--orange-light) !important;
+  color: var(--orange) !important;
+  transform: translateY(-1px);
+}
+.stream-card-item h3 {
+  transition: color 0.2s;
+}
+.stream-card-item:hover h3 {
+  color: var(--navy-dark);
+}
+
+/* ──────────────────────────────────────────────
+   5. COLLEGE CARDS — DEEPER HOVER DEPTH
+   Source: 02_3d_cards multi-shadow-depth pattern
+   ────────────────────────────────────────────── */
+.college-search-card {
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.25s !important;
+  will-change: transform;
+}
+.college-search-card:hover {
+  transform: translateY(-8px) scale(1.012) !important;
+  box-shadow:
+    0 28px 52px rgba(15,23,42,0.14),
+    0 8px 20px rgba(15,23,42,0.07) !important;
+  border-color: rgba(234,88,12,0.28) !important;
+}
+.college-crest-box {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.college-search-card:hover .college-crest-box {
+  transform: scale(1.08);
+}
+
+/* ──────────────────────────────────────────────
+   6. TACTILE BUTTONS — 3D BEVEL + PRESS STATE
+   Source: 03_3d_buttons/silly-lionfish-21 depth technique
+   Re-paletted: orange #ea580c, bevel via box-shadow layers
+   ────────────────────────────────────────────── */
+.btn-nav-primary,
+.omni-submit-btn,
+.btn-exam-action:not(.outline),
+.counsel-submit-btn,
+.btn-primary-modal,
+.footer-submit-btn,
+.btn-card-primary,
+.btn-compare-now,
+.drawer-btn {
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 4px 14px rgba(234,88,12,0.32),
+    0 2px 0 rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.22) !important;
+  transition: transform 0.18s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.18s cubic-bezier(0.16,1,0.3,1),
+              background 0.18s !important;
+}
+.btn-nav-primary::after,
+.omni-submit-btn::after,
+.counsel-submit-btn::after,
+.btn-primary-modal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.14) 0%, transparent 60%);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+.btn-nav-primary > *,
+.omni-submit-btn > *,
+.counsel-submit-btn > *,
+.btn-primary-modal > * {
+  position: relative;
+  z-index: 1;
+}
+.btn-nav-primary:hover,
+.omni-submit-btn:hover,
+.counsel-submit-btn:hover,
+.btn-primary-modal:hover,
+.btn-card-primary:hover,
+.btn-compare-now:hover {
+  transform: translateY(-2px) !important;
+  box-shadow:
+    0 8px 24px rgba(234,88,12,0.44),
+    0 2px 0 rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.22) !important;
+}
+.btn-nav-primary:active,
+.omni-submit-btn:active,
+.counsel-submit-btn:active,
+.btn-primary-modal:active,
+.btn-card-primary:active,
+.btn-compare-now:active {
+  transform: translateY(1px) scale(0.97) !important;
+  box-shadow:
+    0 2px 8px rgba(234,88,12,0.25),
+    0 1px 0 rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.10) !important;
+}
+
+/* Chip buttons — active press feedback */
+.chip-btn {
+  transition: transform 0.18s cubic-bezier(0.16,1,0.3,1),
+              background 0.22s, border-color 0.22s, color 0.22s,
+              box-shadow 0.22s !important;
+}
+.chip-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* ──────────────────────────────────────────────
+   7. FORM INPUTS — ANIMATED FOCUS RING
+   Source: 07_fancy_switches_and_inputs — focus glow
+   Re-paletted: warm orange instead of neon purple
+   ────────────────────────────────────────────── */
+.form-input,
+.filter-search-input,
+.sort-select,
+.footer-input {
+  transition: border-color 0.22s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.22s cubic-bezier(0.16,1,0.3,1),
+              background 0.22s !important;
+}
+.form-input:focus,
+.filter-search-input:focus,
+.sort-select:focus {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 3px rgba(234,88,12,0.14) !important;
+  background: var(--white) !important;
+  outline: none !important;
+}
+.footer-input:focus {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 3px rgba(234,88,12,0.18) !important;
+  outline: none !important;
+}
+.otp-digit:focus {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 3px rgba(234,88,12,0.14) !important;
+  background: var(--orange-light) !important;
+  outline: none !important;
+}
+.phone-input-row:focus-within {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 0 3px rgba(234,88,12,0.14) !important;
+}
+
+/* ──────────────────────────────────────────────
+   8. REVIEW CARDS — HOVER ELEVATION
+   ────────────────────────────────────────────── */
+.shiksha-review-card,
+.eduquest-review-card {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.4s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.25s !important;
+}
+.shiksha-review-card:hover,
+.eduquest-review-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow:
+    0 20px 40px rgba(15,23,42,0.11),
+    0 4px 12px rgba(15,23,42,0.06) !important;
+  border-color: rgba(234,88,12,0.22) !important;
+}
+
+/* ──────────────────────────────────────────────
+   9. COUNSELLING SECTION — FORM CARD AMBIENT
+   ────────────────────────────────────────────── */
+.counsel-form-card {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.4s cubic-bezier(0.16,1,0.3,1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.counsel-form-card::before {
+  content: '';
+  position: absolute;
+  top: -40%; left: -30%;
+  width: 70%; height: 70%;
+  background: radial-gradient(ellipse, rgba(234,88,12,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Trust items micro-hover */
+.trust-item {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.trust-item:hover {
+  transform: translateX(3px);
+}
+.trust-icon {
+  transition: background 0.25s, transform 0.3s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.trust-item:hover .trust-icon {
+  background: rgba(234,88,12,0.25) !important;
+  transform: scale(1.1);
+}
+
+/* ──────────────────────────────────────────────
+   10. EXAM TABLE — ENHANCED ROW HOVER
+   ────────────────────────────────────────────── */
+.exams-table tbody tr {
+  transition: background 0.18s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.exams-table tbody tr:hover td {
+  background: rgba(255,247,237,0.85) !important;
+}
+.exams-table tbody tr:hover .exam-name-cell {
+  color: var(--navy-dark) !important;
+}
+
+/* ──────────────────────────────────────────────
+   11. SCROLL REVEAL UTILITY
+   Emil Kowalski spring easing on entrance
+   Added to elements by eduquest.js via IntersectionObserver
+   ────────────────────────────────────────────── */
+.eq-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+              transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.eq-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.eq-reveal-delay-1 { transition-delay: 0.08s; }
+.eq-reveal-delay-2 { transition-delay: 0.16s; }
+.eq-reveal-delay-3 { transition-delay: 0.24s; }
+.eq-reveal-delay-4 { transition-delay: 0.32s; }
+
+/* ──────────────────────────────────────────────
+   12. COMPARE BAR — SPRING ENTRY ANIMATION
+   ────────────────────────────────────────────── */
+.compare-bar {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1),
+              opacity 0.4s !important;
+}
+
+/* ──────────────────────────────────────────────
+   13. FILTER CHIPS — SPRING HOVER
+   ────────────────────────────────────────────── */
+.fee-bucket-btn {
+  transition: all 0.22s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.fee-bucket-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 10px rgba(234,88,12,0.14) !important;
+}
+.fee-bucket-btn.active {
+  transform: translateY(-1px) !important;
+}
+
+/* Section "View All" button */
+.btn-view-all {
+  transition: all 0.22s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.btn-view-all:hover {
+  transform: translateX(2px) !important;
+}
+
+/* ──────────────────────────────────────────────
+   14. BADGE ORANGE — SUBTLE BREATH GLOW
+   ────────────────────────────────────────────── */
+@keyframes eqBadgePulse {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 0 4px rgba(234,88,12,0.09); }
+}
+.badge-orange {
+  animation: eqBadgePulse 2.8s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────────
+   15. FLOATING COUNSEL BAR — ENHANCED GLOW
+   ────────────────────────────────────────────── */
+.counsel-chat-btn {
+  transition: background 0.18s cubic-bezier(0.16,1,0.3,1),
+              transform 0.18s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.18s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.counsel-chat-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(234,88,12,0.4) !important;
+}
+.counsel-chat-btn:active {
+  transform: scale(0.96) !important;
+}
+
+/* Status dot breathing glow */
+@keyframes eqPulseRing {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+.status-pulse-dot {
+  animation: eqPulseRing 2s infinite !important;
+}
+
+/* ──────────────────────────────────────────────
+   16. MODAL — SPRING ENTRANCE + INPUT FOCUS
+   ────────────────────────────────────────────── */
+.eduquest-modal-overlay,
+.shiksha-modal-overlay {
+  transition: opacity 0.25s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.eduquest-modal-container,
+.shiksha-modal-container {
+  animation: eqModalIn 0.35s cubic-bezier(0.16,1,0.3,1) !important;
+}
+@keyframes eqModalIn {
+  from { opacity: 0; transform: scale(0.90) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ──────────────────────────────────────────────
+   17. SECTION HEADINGS — SUBTLE ACCENT LINE
+   ────────────────────────────────────────────── */
+.section-title {
+  position: relative;
+  display: inline-block;
+}
+
+/* Social buttons in footer */
+.social-btn {
+  transition: background 0.22s cubic-bezier(0.16,1,0.3,1),
+              transform 0.22s cubic-bezier(0.16,1,0.3,1) !important;
+}
+.social-btn:hover {
+  transform: translateY(-3px) scale(1.08) !important;
+}
+.social-btn:active {
+  transform: scale(0.94) !important;
+}
