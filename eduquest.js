@@ -763,7 +763,15 @@
     statEls.forEach(el => countObs.observe(el));
   }
 
-  /* ── 4. Button tactile press feedback ── */
+  /* ── 4. model-viewer: forward wheel events to page scroll ── */
+  const heroBook = document.getElementById('heroBook');
+  if (heroBook) {
+    heroBook.addEventListener('wheel', e => {
+      window.scrollBy({ top: e.deltaY, left: 0 });
+    }, { passive: true });
+  }
+
+  /* ── 5. Button tactile press feedback ── */
   const pressSelectors = [
     '.btn-nav-primary', '.omni-submit-btn', '.btn-exam-action:not(.outline)',
     '.counsel-submit-btn', '.btn-primary-modal', '.footer-submit-btn',
