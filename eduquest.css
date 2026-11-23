@@ -494,8 +494,8 @@ footer {
   justify-content: center;
   overflow-x: visible;
   overflow-y: visible;
-  padding-top: 10px;
-  padding-bottom: 14px;
+  margin-top: 18px;
+  padding-bottom: 4px;
   scrollbar-width: none;
 }
 .stream-chips-bar::-webkit-scrollbar { display: none; }
@@ -1033,7 +1033,7 @@ footer {
   font-size: clamp(15px, 1.8vw, 17px);
   color: #c4ab97;
   max-width: 520px;
-  margin: 0 auto 24px;
+  margin: 20px auto 0;
   line-height: 1.6;
 }
 .hero-stats-bar {
