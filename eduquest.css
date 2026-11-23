@@ -977,37 +977,6 @@ footer {
   position: relative;
   overflow: hidden;
 }
-.hero-layout {
-  display: flex;
-  align-items: stretch;
-  gap: 40px;
-  min-height: 520px;
-}
-.hero-left {
-  flex: 0 0 52%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.hero-right {
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  overflow: visible;
-}
-.hero-right model-viewer {
-  display: block;
-  width: 100%;
-  height: 460px;
-}
-model-viewer,
-model-viewer:focus,
-model-viewer:focus-visible {
-  outline: none !important;
-  border: none !important;
-  --model-viewer-border: none;
-}
 .hero-section::before {
   content: "";
   position: absolute; inset: 0;
@@ -1681,9 +1650,6 @@ model-viewer:focus-visible {
   .stream-grid { grid-template-columns: repeat(2,1fr); }
   .featured-grid { grid-template-columns: 1fr; }
   .hero-stats-bar { gap: 20px; }
-  .hero-layout { flex-direction: column; }
-  .hero-left { flex: none; width: 100%; }
-  .hero-right { width: 100%; min-height: 300px; }
   .reviews-grid { grid-template-columns: 1fr; }
   .college-stats-grid { grid-template-columns: 1fr 1fr; }
   .placement-stats-banner { grid-template-columns: 1fr 1fr; }
