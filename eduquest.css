@@ -977,10 +977,26 @@ footer {
   position: relative;
   overflow: hidden;
 }
+.hero-layout {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+.hero-left {
+  flex: 0 0 55%;
+  min-width: 0;
+}
+.hero-right {
+  flex: 1;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .hero-section::before {
   content: "";
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(2,132,199,0.12) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 70% 50%, rgba(230,198,64,0.08) 0%, transparent 65%);
   pointer-events: none;
 }
 .hero-section::after {
@@ -993,8 +1009,8 @@ footer {
 .hero-badge { margin-bottom: 20px; }
 .hero-badge span {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(82,183,136,0.18); color: #80cba8;
-  border: 1px solid rgba(82,183,136,0.4);
+  background: rgba(138,168,78,0.18); color: #aace72;
+  border: 1px solid rgba(138,168,78,0.4);
   font-size: 12.5px; font-weight: 700;
   padding: 6px 16px; border-radius: var(--radius-pill);
 }
@@ -1650,6 +1666,9 @@ footer {
   .stream-grid { grid-template-columns: repeat(2,1fr); }
   .featured-grid { grid-template-columns: 1fr; }
   .hero-stats-bar { gap: 20px; }
+  .hero-layout { flex-direction: column; }
+  .hero-left { flex: none; width: 100%; }
+  .hero-right { width: 100%; min-height: 300px; }
   .reviews-grid { grid-template-columns: 1fr; }
   .college-stats-grid { grid-template-columns: 1fr 1fr; }
   .placement-stats-banner { grid-template-columns: 1fr 1fr; }
