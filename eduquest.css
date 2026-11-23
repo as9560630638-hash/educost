@@ -996,6 +996,13 @@ footer {
   align-items: center;
   justify-content: center;
 }
+model-viewer,
+model-viewer:focus,
+model-viewer:focus-visible {
+  outline: none !important;
+  border: none !important;
+  --model-viewer-border: none;
+}
 .hero-section::before {
   content: "";
   position: absolute; inset: 0;
