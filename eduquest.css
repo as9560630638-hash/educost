@@ -467,7 +467,9 @@ footer {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 12px;
+  overflow-y: visible;
+  padding-top: 10px;
+  padding-bottom: 14px;
   scrollbar-width: none;
 }
 .stream-chips-bar::-webkit-scrollbar { display: none; }
@@ -1778,8 +1780,9 @@ footer {
               box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
               border-color 0.25s !important;
   transform-style: preserve-3d;
-  will-change: transform;
+  contain: layout style;
 }
+.stream-card-item:hover { will-change: transform; }
 .stream-card-item:hover {
   box-shadow:
     0 24px 48px rgba(15,23,42,0.12),
@@ -1818,8 +1821,9 @@ footer {
   transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
               box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
               border-color 0.25s !important;
-  will-change: transform;
+  contain: layout style;
 }
+.college-search-card:hover { will-change: transform; }
 .college-search-card:hover {
   transform: translateY(-8px) scale(1.012) !important;
   box-shadow:
@@ -2020,13 +2024,13 @@ footer {
    ────────────────────────────────────────────── */
 .eq-reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translate3d(0, 22px, 0);
   transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
               transform 0.6s cubic-bezier(0.16,1,0.3,1);
 }
 .eq-reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 .eq-reveal-delay-1 { transition-delay: 0.08s; }
 .eq-reveal-delay-2 { transition-delay: 0.16s; }
