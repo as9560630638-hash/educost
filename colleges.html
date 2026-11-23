@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Engineering Colleges in India 2026 — ShikshaPortal</title>
+  <meta name="description" content="Browse 1,248+ top engineering colleges in India. Filter by fees, location, ranking, and accepted exams. Download brochures and check cutoffs." />
+  <link rel="stylesheet" href="shiksha-style.css" />
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="top-bar">
+  <div class="container">
+    <div class="top-bar-inner">
+      <div class="top-bar-ticker">
+        <div class="ticker-track">
+          <span class="ticker-item"><span class="ticker-fire">🔥</span> JEE Main 2026 — Apply before Dec 4</span>
+          <span class="ticker-item"><span class="ticker-fire">📢</span> CAT 2026 Cutoff Calculator is LIVE</span>
+          <span class="ticker-item"><span class="ticker-fire">🎓</span> NEET UG 2026 Registration Opens Feb 9</span>
+          <span class="ticker-item"><span class="ticker-fire">⚡</span> GATE 2026 Admit Card available — IIT Roorkee</span>
+          <span class="ticker-item"><span class="ticker-fire">🔥</span> JEE Main 2026 — Apply before Dec 4</span>
+          <span class="ticker-item"><span class="ticker-fire">📢</span> CAT 2026 Cutoff Calculator is LIVE</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <a href="#" class="top-bar-link">🌐 EN | हिन्दी</a>
+        <a href="#" class="top-bar-link">📱 Download App</a>
+        <a href="#" class="top-bar-link">❓ Ask a Question</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="main-nav">
+  <div class="container">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo"><span class="nav-logo-icon">🎓</span>ShikshaPortal</a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="colleges.html?stream=mba" class="nav-link">MBA <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Management</div>
+            <a href="colleges.html?stream=mba">Top MBA Colleges</a>
+            <a href="exams.html#cat">CAT 2026</a>
+            <a href="colleges.html?type=online-mba">Online MBA</a>
+            <a href="#" class="trigger-lead-modal">IIM Cutoff Predictor</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="colleges.html?stream=engineering" class="nav-link">B.Tech <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Engineering</div>
+            <a href="colleges.html?type=iit">Top IITs</a>
+            <a href="colleges.html?type=nit">Top NITs</a>
+            <a href="exams.html#jee">JEE Main 2026</a>
+            <a href="#" class="trigger-lead-modal">JEE College Predictor</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="colleges.html?stream=medical" class="nav-link">Medical <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Medical</div>
+            <a href="colleges.html?stream=medical">Top MBBS Colleges</a>
+            <a href="exams.html#neet">NEET UG 2026</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="colleges.html?stream=design" class="nav-link">Design <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Design</div>
+            <a href="colleges.html?stream=design">Design Colleges</a>
+            <a href="exams.html#nift">NIFT Exam</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="colleges.html?stream=law" class="nav-link">Law <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Law</div>
+            <a href="colleges.html?stream=law">Top Law Colleges</a>
+            <a href="exams.html#clat">CLAT 2026</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="colleges.html?stream=abroad" class="nav-link">Study Abroad <span class="caret">▾</span></a>
+          <div class="mega-menu">
+            <div class="mega-menu-title">Study Abroad</div>
+            <a href="colleges.html?country=usa">USA Universities</a>
+            <a href="colleges.html?country=uk">UK Universities</a>
+          </div>
+        </li>
+      </ul>
+      <div class="nav-right">
+        <button class="nav-city-select">📍 New Delhi ▾</button>
+        <button class="btn-nav-ghost trigger-lead-modal">Write a Review</button>
+        <button class="btn-nav-primary trigger-lead-modal">Login / Register</button>
+        <button class="mobile-menu-btn" id="hamburgerBtn" aria-label="Open menu">
+          <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="drawer-panel">
+    <button class="modal-close-btn" id="drawerClose" style="position:static;margin-bottom:20px;">✕</button>
+    <div class="drawer-logo">🎓 ShikshaPortal</div>
+    <a href="colleges.html?stream=mba" class="drawer-nav-item">MBA Colleges</a>
+    <a href="colleges.html?stream=engineering" class="drawer-nav-item">Engineering</a>
+    <a href="colleges.html?stream=medical" class="drawer-nav-item">Medical</a>
+    <a href="exams.html" class="drawer-nav-item">Exams</a>
+    <a href="compare.html" class="drawer-nav-item">Compare</a>
+    <button class="drawer-btn trigger-lead-modal">Login / Register Free</button>
+  </div>
+</div>
+
+<!-- BREADCRUMB BAR -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="colleges.html">Colleges</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="colleges.html?stream=engineering">Engineering</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Top B.Tech Colleges in India</span>
+    </nav>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<main>
+  <div class="container">
+    <div class="colleges-page-layout">
+
+      <!-- ═══════════════════════════
+           LEFT FILTER SIDEBAR
+      ═══════════════════════════ -->
+      <aside class="filter-sidebar">
+        <div class="filter-sidebar-title">
+          <span>Filters</span>
+          <span class="filter-clear-all" id="clearAllFilters">Clear All</span>
+        </div>
+
+        <!-- College Name Search -->
+        <div class="filter-section">
+          <div class="filter-section-title">Search by College Name</div>
+          <input
+            type="text"
+            id="filterByNameInput"
+            class="filter-search-input"
+            placeholder="e.g. IIT, NIT, BITS…"
+          />
+        </div>
+
+        <!-- State / Location -->
+        <div class="filter-section">
+          <div class="filter-section-title">State / Location</div>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="maharashtra" data-label="Maharashtra" /> Maharashtra <span class="filter-count">(184)</span>
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="tamil-nadu" data-label="Tamil Nadu" /> Tamil Nadu <span class="filter-count">(142)</span>
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="karnataka" data-label="Karnataka" /> Karnataka <span class="filter-count">(128)</span>
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="uttar-pradesh" data-label="Uttar Pradesh" /> Uttar Pradesh <span class="filter-count">(96)</span>
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="delhi" data-label="Delhi NCR" /> Delhi NCR <span class="filter-count">(84)</span>
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="bengaluru" data-label="Bengaluru" /> Bengaluru <span class="filter-count">(72)</span>
+          </label>
+        </div>
+
+        <!-- Degree Level -->
+        <div class="filter-section">
+          <div class="filter-section-title">Degree Level</div>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="undergraduate" data-label="Undergraduate" checked /> Undergraduate (B.Tech / B.E)
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="postgraduate" data-label="Postgraduate" /> Postgraduate (M.Tech / MS)
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="dual-degree" data-label="Dual Degree" /> Integrated / Dual Degree
+          </label>
+        </div>
+
+        <!-- Total Fees Range -->
+        <div class="filter-section">
+          <div class="filter-section-title">Total Tuition Fees</div>
+          <div class="fee-range-display">
+            <span>₹50,000</span>
+            <span id="feeRangeDisplay">₹30 Lakhs+</span>
+          </div>
+          <input type="range" id="feeRangeSlider" class="fee-slider" min="50000" max="3000000" value="3000000" step="50000" />
+          <div class="fee-bucket-row">
+            <button class="fee-bucket-btn" data-fee="200000">&lt; ₹2L</button>
+            <button class="fee-bucket-btn" data-fee="500000">₹2L–₹5L</button>
+            <button class="fee-bucket-btn" data-fee="1000000">₹5L–₹10L</button>
+            <button class="fee-bucket-btn" data-fee="3000000">&gt; ₹10L</button>
+          </div>
+        </div>
+
+        <!-- Institute Ownership -->
+        <div class="filter-section">
+          <div class="filter-section-title">Institute Type</div>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="govt" data-label="Government" checked /> Public / Government (IITs, NITs)
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="private" data-label="Private" /> Private Autonomous
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="deemed" data-label="Deemed University" /> Deemed-to-be University
+          </label>
+        </div>
+
+        <!-- Accepted Exams -->
+        <div class="filter-section">
+          <div class="filter-section-title">Accepted Exams</div>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="jee-main" data-label="JEE Main" checked /> JEE Main
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="jee-advanced" data-label="JEE Advanced" /> JEE Advanced
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="bitsat" data-label="BITSAT" /> BITSAT
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="mht-cet" data-label="MHT CET" /> MHT CET
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="kcet" data-label="KCET" /> KCET
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="wbjee" data-label="WBJEE" /> WBJEE
+          </label>
+        </div>
+
+        <!-- Accreditation -->
+        <div class="filter-section">
+          <div class="filter-section-title">Ranking & Accreditation</div>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="nirf-top50" data-label="NIRF Top 50" checked /> NIRF Top 50
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="nirf-top100" data-label="NIRF Top 100" /> NIRF Top 100
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="naac-a" data-label="NAAC A++" /> NAAC A++ / A+
+          </label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" class="filter-checkbox-item" value="aicte" data-label="AICTE Approved" /> AICTE Approved
+          </label>
+        </div>
+      </aside>
+
+      <!-- ═══════════════════════════
+           LISTINGS AREA
+      ═══════════════════════════ -->
+      <div class="listings-area">
+
+        <!-- Listings Top Bar -->
+        <div class="listings-top-bar">
+          <p class="results-count">Showing <strong id="resultsCount">12</strong> Engineering Colleges in India</p>
+          <select id="sortSelect" class="sort-select">
+            <option value="nirf">Sort: NIRF Rank (Best First)</option>
+            <option value="package">Highest Placement Package</option>
+            <option value="fees">Fees: Low to High</option>
+            <option value="rating">Student Rating</option>
+          </select>
+        </div>
+
+        <!-- Active Filter Chips -->
+        <div class="active-filters-bar" id="activeFiltersBar">
+          <span class="filter-chip">Engineering (B.Tech) <span class="filter-chip-remove">×</span></span>
+          <span class="filter-chip">Govt Colleges <span class="filter-chip-remove">×</span></span>
+          <span class="filter-chip">JEE Main <span class="filter-chip-remove">×</span></span>
+        </div>
+
+        <!-- College Cards -->
+        <div id="collegeListingsContainer">
+
+          <!-- IIT Madras -->
+          <div class="college-search-card"
+               data-name="iit madras" data-tags="engineering,iit,govt,jee-advanced,nirf-top50,naac-a,undergraduate" data-nirf="1" data-pkg="2148000" data-fee="214000" data-rating="4.8">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#0a2744,#1e3a5f);">
+              <span class="college-rank-tag">⭐ NIRF #1 Overall</span>
+              <span class="college-accreditation-pill">NAAC A++</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">🏛️</div>
+                <div class="title-details">
+                  <h3 class="college-name">Indian Institute of Technology, Madras (IIT Madras)</h3>
+                  <p class="college-location">📍 Chennai, Tamil Nadu · Established 1959 · Public / Institute of National Importance</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.8</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹8.56 Lakhs</span>
+                  <span class="stat-sub">4-Year B.Tech</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹21.4 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹1.31 Cr</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">JEE Adv. #67</span>
+                  <span class="stat-sub">CSE Closing 2025</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="IIT Madras"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- IIT Delhi -->
+          <div class="college-search-card"
+               data-name="iit delhi" data-tags="engineering,iit,govt,jee-advanced,nirf-top50,naac-a,undergraduate,delhi" data-nirf="2" data-pkg="2582000" data-fee="228000" data-rating="4.8">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#1a0a44,#2d1b69);">
+              <span class="college-rank-tag">⭐ NIRF #2 Engineering</span>
+              <span class="college-accreditation-pill">NAAC A++</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">🏯</div>
+                <div class="title-details">
+                  <h3 class="college-name">Indian Institute of Technology, Delhi (IIT Delhi)</h3>
+                  <p class="college-location">📍 Hauz Khas, New Delhi · Established 1961 · Public / Institute of National Importance</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.8</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹8.58 Lakhs</span>
+                  <span class="stat-sub">4-Year B.Tech</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹25.82 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹2.05 Cr</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">JEE Adv. #116</span>
+                  <span class="stat-sub">CSE Closing 2025</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="IIT Delhi"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <a href="college-details.html" class="btn-card-primary">View Details →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- IIT Bombay -->
+          <div class="college-search-card"
+               data-name="iit bombay" data-tags="engineering,iit,govt,jee-advanced,nirf-top50,naac-a,undergraduate,maharashtra" data-nirf="3" data-pkg="2350000" data-fee="219000" data-rating="4.9">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#0a192f,#1e3a5f);">
+              <span class="college-rank-tag">⭐ NIRF #3 Engineering</span>
+              <span class="college-accreditation-pill">NAAC A++</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">🌊</div>
+                <div class="title-details">
+                  <h3 class="college-name">Indian Institute of Technology, Bombay (IIT Bombay)</h3>
+                  <p class="college-location">📍 Powai, Mumbai, Maharashtra · Established 1958 · Public / Institute of National Importance</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.9</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹8.92 Lakhs</span>
+                  <span class="stat-sub">4-Year B.Tech</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹23.5 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹1.87 Cr</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">JEE Adv. #80</span>
+                  <span class="stat-sub">CSE Closing 2025</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="IIT Bombay"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BITS Pilani -->
+          <div class="college-search-card"
+               data-name="bits pilani" data-tags="engineering,private,bitsat,nirf-top50,undergraduate" data-nirf="26" data-pkg="1800000" data-fee="580000" data-rating="4.6">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#1a2e0a,#2d4a1b);">
+              <span class="college-rank-tag">⭐ NIRF #26 Engineering</span>
+              <span class="college-accreditation-pill">Deemed University</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">🔬</div>
+                <div class="title-details">
+                  <h3 class="college-name">BITS Pilani — Birla Institute of Technology & Science</h3>
+                  <p class="college-location">📍 Pilani, Rajasthan · Established 1964 · Deemed University (Private)</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.6</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹20.8 Lakhs</span>
+                  <span class="stat-sub">4-Year B.E</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹18 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹1.1 Cr</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">BITSAT 350+</span>
+                  <span class="stat-sub">CSE 2025</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="BITS Pilani"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NIT Trichy -->
+          <div class="college-search-card"
+               data-name="nit trichy" data-tags="engineering,nit,govt,jee-main,nirf-top50,undergraduate,tamil-nadu" data-nirf="9" data-pkg="1500000" data-fee="130000" data-rating="4.5">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#0a192f,#153a5f);">
+              <span class="college-rank-tag">⭐ NIRF #9 Engineering</span>
+              <span class="college-accreditation-pill">NAAC A</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">⚡</div>
+                <div class="title-details">
+                  <h3 class="college-name">National Institute of Technology, Tiruchirappalli (NIT Trichy)</h3>
+                  <p class="college-location">📍 Tiruchirappalli, Tamil Nadu · Established 1964 · Public / NIT</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.5</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹5.37 Lakhs</span>
+                  <span class="stat-sub">4-Year B.Tech</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹15 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹58 LPA</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">JEE Main #412</span>
+                  <span class="stat-sub">CSE Closing 2025</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="NIT Trichy"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIT Vellore -->
+          <div class="college-search-card"
+               data-name="vit vellore" data-tags="engineering,private,viteee,undergraduate,tamil-nadu,aicte" data-nirf="11" data-pkg="1200000" data-fee="210000" data-rating="4.3">
+            <div class="card-hero-banner" style="background:linear-gradient(135deg,#2a1a0a,#5a3a1b);">
+              <span class="college-rank-tag">⭐ NIRF #11 (Pvt. Engg)</span>
+              <span class="college-accreditation-pill">NAAC A++</span>
+            </div>
+            <div class="card-body-content">
+              <div class="title-logo-row">
+                <div class="college-crest-box">🧪</div>
+                <div class="title-details">
+                  <h3 class="college-name">Vellore Institute of Technology (VIT Vellore)</h3>
+                  <p class="college-location">📍 Vellore, Tamil Nadu · Established 1984 · Deemed University (Private)</p>
+                </div>
+                <div class="college-rating-badge"><span class="star-icon">★</span> 4.3</div>
+              </div>
+              <div class="college-stats-grid">
+                <div class="stat-col">
+                  <span class="stat-label">Total Course Fee</span>
+                  <span class="stat-value">₹7.98 Lakhs</span>
+                  <span class="stat-sub">4-Year B.Tech</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Placement Record</span>
+                  <span class="stat-value highlight-green">₹12 LPA Avg</span>
+                  <span class="stat-sub">Highest: ₹58 LPA</span>
+                </div>
+                <div class="stat-col">
+                  <span class="stat-label">Cutoff Benchmark</span>
+                  <span class="stat-value highlight-blue">VITEEE Top 5K</span>
+                  <span class="stat-sub">CSE Merit List</span>
+                </div>
+              </div>
+              <div class="card-footer-actions">
+                <label class="compare-toggle-label">
+                  <input type="checkbox" class="compare-chk" data-college="VIT Vellore"> + Add to Compare
+                </label>
+                <div class="btn-group-right">
+                  <a href="college-details.html#tab-cutoffs" class="btn-card-outline">View Cutoffs</a>
+                  <button class="btn-card-outline trigger-lead-modal">Download Brochure</button>
+                  <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /collegeListingsContainer -->
+
+        <!-- Load More Button -->
+        <div style="text-align:center;margin-top:28px;">
+          <button class="btn-card-outline" style="padding:14px 40px;font-size:15px;border-radius:12px;" onclick="this.textContent='Loading…'">
+            Load More Colleges (1,242 remaining)
+          </button>
+        </div>
+
+      </div><!-- /listings-area -->
+    </div><!-- /colleges-page-layout -->
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-lead-banner">
+      <div class="footer-lead-text">
+        <h3>Can't find the right college?</h3>
+        <p>Talk to our expert counsellors — free, unbiased guidance for your admission journey.</p>
+      </div>
+      <form class="footer-lead-form" id="footerCounselForm">
+        <input type="email" class="footer-input" placeholder="Enter your email address" required />
+        <button type="submit" class="footer-submit-btn">Get Free Guidance</button>
+      </form>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">🎓 ShikshaPortal</div>
+        <p>India's most trusted college discovery platform. Helping 2.5 million+ students make informed career decisions with verified data and expert counselling.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">🐦</a>
+          <a href="#" class="social-btn">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Top MBA Colleges</h4>
+        <a href="#">MBA in Delhi</a>
+        <a href="#">MBA in Mumbai</a>
+        <a href="#">IIMs in India</a>
+        <a href="#">Executive MBA</a>
+      </div>
+      <div class="footer-col">
+        <h4>Top Engineering</h4>
+        <a href="#">B.Tech in Pune</a>
+        <a href="#">Top IITs</a>
+        <a href="#">Top NITs</a>
+        <a href="#">B.Tech CSE</a>
+      </div>
+      <div class="footer-col">
+        <h4>Top Exams</h4>
+        <a href="exams.html#jee">JEE Main 2026</a>
+        <a href="exams.html#cat">CAT 2026</a>
+        <a href="exams.html#neet">NEET UG 2026</a>
+        <a href="exams.html#gate">GATE 2026</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Careers</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Educational Discovery Network. All trademarks belong to their respective institutions.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- LEAD MODAL (identical across all pages) -->
+<div class="shiksha-modal-overlay" id="leadModal" role="dialog" aria-modal="true">
+  <div class="shiksha-modal-container">
+    <button class="modal-close-btn" id="closeModalBtn">✕</button>
+    <span class="modal-badge">🎓 Free Admissions Guidance</span>
+    <h2 class="modal-title">Get Free College Counselling & Official Brochure</h2>
+    <p class="modal-sub">Join 2.5 Million+ students already shortlisting their dream colleges.</p>
+    <div class="step-progress-bar">
+      <div class="step-dot active" data-step="1">1</div>
+      <div class="step-line"></div>
+      <div class="step-dot" data-step="2">2</div>
+      <div class="step-line"></div>
+      <div class="step-dot" data-step="3">3</div>
+    </div>
+    <div class="modal-step-pane active" id="modalStep1">
+      <div style="margin-bottom:16px;">
+        <button class="btn-google-auth"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google</button>
+      </div>
+      <div class="social-login-sep"><span>OR CONTINUE WITH MOBILE</span></div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number</label>
+        <div class="phone-input-row">
+          <span class="phone-prefix">🇮🇳 +91</span>
+          <input type="tel" id="userMobile" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" />
+        </div>
+      </div>
+      <div class="otp-container" id="otpBox" style="display:none;">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Enter 4-digit code sent to +91 ••••••1234.</p>
+        <div class="otp-inputs">
+          <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+          <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+          <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+          <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+        </div>
+        <p class="otp-resend-text"><a href="#" id="resendOtpLink">Resend OTP</a></p>
+      </div>
+      <button class="btn-primary-modal" id="step1NextBtn">Send Verification OTP</button>
+    </div>
+    <div class="modal-step-pane" id="modalStep2">
+      <h3 style="font-family:var(--font-head);font-size:17px;font-weight:800;margin-bottom:16px;">Tell us about yourself</h3>
+      <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="userName" class="form-input" placeholder="Enter your full name" /></div>
+      <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="name@example.com" /></div>
+      <div class="form-group"><label class="form-label">Current City</label><input type="text" class="form-input" placeholder="e.g. New Delhi, Bengaluru" /></div>
+      <div class="modal-actions-row">
+        <button class="btn-ghost-modal" id="step2BackBtn">← Back</button>
+        <button class="btn-primary-modal" id="step2NextBtn">Continue →</button>
+      </div>
+    </div>
+    <div class="modal-step-pane" id="modalStep3">
+      <h3 style="font-family:var(--font-head);font-size:17px;font-weight:800;margin-bottom:12px;">Your Target Stream</h3>
+      <div class="stream-select-grid">
+        <div class="stream-card"><span class="stream-card-icon">⚙️</span>Engineering</div>
+        <div class="stream-card"><span class="stream-card-icon">📊</span>Management</div>
+        <div class="stream-card"><span class="stream-card-icon">🩺</span>Medical</div>
+        <div class="stream-card"><span class="stream-card-icon">🎨</span>Design</div>
+        <div class="stream-card"><span class="stream-card-icon">⚖️</span>Law</div>
+        <div class="stream-card"><span class="stream-card-icon">🌏</span>Abroad</div>
+      </div>
+      <div class="consent-checkbox-wrap">
+        <label class="checkbox-label" style="margin-bottom:10px;"><input type="checkbox" checked /> I agree to the Terms of Use and Privacy Policy.</label>
+        <label class="checkbox-label"><input type="checkbox" checked /> I authorise ShikshaPortal to contact me via Call, SMS, Email & WhatsApp.</label>
+      </div>
+      <div class="modal-actions-row">
+        <button class="btn-ghost-modal" id="step3BackBtn">← Back</button>
+        <button class="btn-primary-modal" id="step3SubmitBtn">Get Free Brochure 🎓</button>
+      </div>
+    </div>
+    <div class="modal-step-pane" id="modalSuccess">
+      <div class="modal-success-pane">
+        <div class="success-icon">✅</div>
+        <h3 class="success-title">You're All Set!</h3>
+        <p class="success-sub">Brochure sent to your email. Our counsellor will call within 2 hours.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compare Bar -->
+<div class="compare-bar" id="compareBar">
+  <span class="compare-bar-title">📊 Compare Colleges:</span>
+  <div class="compare-slots" id="compareBarSlots"></div>
+  <div class="compare-bar-actions">
+    <button class="btn-compare-now" id="compareNowBtn">Compare Now →</button>
+    <button class="btn-compare-clear" id="compareClearBtn">Clear All</button>
+  </div>
+</div>
+
+<!-- Floating Widget -->
+<div class="shiksha-floating-counsel">
+  <div class="counsel-pill-card">
+    <div class="status-pulse-dot"></div>
+    <div class="counsel-text-col">
+      <span class="counsel-title">Talk to a Career Mentor</span>
+      <span class="counsel-subtitle">Free · 2 min wait</span>
+    </div>
+    <button class="counsel-call-btn">📞</button>
+    <button class="counsel-chat-btn trigger-lead-modal">Get Free Help</button>
+  </div>
+</div>
+
+<script src="shiksha.js"></script>
+</body>
+</html>
