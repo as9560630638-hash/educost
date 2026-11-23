@@ -746,7 +746,7 @@ footer {
   border-color: var(--border-mid);
 }
 .card-hero-banner {
-  height: 110px;
+  height: 136px;
   background: linear-gradient(135deg, #0a192f, #1e293b);
   position: relative;
   display: flex; align-items: flex-start; justify-content: space-between;
