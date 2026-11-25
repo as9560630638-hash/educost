@@ -476,20 +476,21 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
      ============================================================ */
   const compareBar    = $('#compareBar');
   const compareSlots  = $$('.compare-slot-placeholder');
-  let selectedColleges = [];
+  let selectedColleges = []; // [{name, slug}]
 
   document.addEventListener('change', e => {
     if (!e.target.classList.contains('compare-chk')) return;
     const name = e.target.dataset.college;
+    const slug = e.target.dataset.slug || '';
     if (e.target.checked) {
       if (selectedColleges.length >= 3) {
         e.target.checked = false;
         showToast('Maximum 3 colleges can be compared at once.');
         return;
       }
-      selectedColleges.push(name);
+      selectedColleges.push({ name, slug });
     } else {
-      selectedColleges = selectedColleges.filter(n => n !== name);
+      selectedColleges = selectedColleges.filter(n => n.name !== name);
     }
     renderCompareBar();
   });
@@ -509,8 +510,8 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
     for (let i = 0; i < 3; i++) {
       if (selectedColleges[i]) {
         html += `<div class="compare-slot filled">
-          <span class="compare-slot-name">${selectedColleges[i]}</span>
-          <button class="compare-slot-remove" data-college="${selectedColleges[i]}">×</button>
+          <span class="compare-slot-name">${selectedColleges[i].name}</span>
+          <button class="compare-slot-remove" data-college="${selectedColleges[i].name}">×</button>
         </div>`;
       } else {
         html += `<div class="compare-slot"><span style="font-size:12px;color:#64748b">+ Add College</span></div>`;
@@ -521,7 +522,7 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
     $$('.compare-slot-remove', compareBar).forEach(btn => {
       btn.addEventListener('click', () => {
         const name = btn.dataset.college;
-        selectedColleges = selectedColleges.filter(n => n !== name);
+        selectedColleges = selectedColleges.filter(n => n.name !== name);
         const cb = document.querySelector(`.compare-chk[data-college="${name}"]`);
         if (cb) cb.checked = false;
         renderCompareBar();
@@ -533,7 +534,9 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
   if (compareNowBtn) {
     compareNowBtn.addEventListener('click', () => {
       if (selectedColleges.length < 2) { showToast('Please select at least 2 colleges to compare.'); return; }
-      window.location.href = 'compare.html';
+      const slugs = selectedColleges.map(c => c.slug).filter(Boolean).join(',');
+      const names = selectedColleges.map(c => encodeURIComponent(c.name)).join(',');
+      window.location.href = 'compare.html?' + (slugs ? 'slugs=' + slugs : 'names=' + names);
     });
   }
   const compareClearBtn = $('#compareClearBtn');
@@ -685,6 +688,9 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
   const container = document.getElementById('collegeListingsContainer');
   if (!container) return;
 
+  // Remove any hardcoded static cards left in HTML
+  container.querySelectorAll('.eq-static-remove').forEach(el => el.remove());
+
   let cursor = null;
   let busy = false;
   let timer = null;
@@ -742,7 +748,7 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
           <div class="stat-col"><span class="stat-label">NIRF Rank</span><span class="stat-value highlight-blue">${c.nirf_rank_overall ? '#'+c.nirf_rank_overall : '—'}</span><span class="stat-sub">Overall</span></div>
         </div>
         <div class="card-footer-actions">
-          <label class="compare-toggle-label"><input type="checkbox" class="compare-chk" data-college="${esc(c.name)}"> + Compare</label>
+          <label class="compare-toggle-label"><input type="checkbox" class="compare-chk" data-college="${esc(c.name)}" data-slug="${esc(c.slug)}"> + Compare</label>
           <div class="btn-group-right">
             <a href="college-details.html?slug=${esc(c.slug)}" class="btn-card-outline">View Details</a>
             <button class="btn-card-outline trigger-lead-modal">Brochure</button>
@@ -803,9 +809,8 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
 
   // Pre-fill from URL and initial fetch
   const urlP = new URLSearchParams(window.location.search);
-  const urlQ = urlP.get('q'), urlStream = urlP.get('stream');
+  const urlQ = urlP.get('q');
   if (urlQ && nameEl) nameEl.value = urlQ;
-  if (urlStream && urlStream !== 'all' && !urlQ && nameEl) nameEl.value = urlStream;
 
   load(true);
 })();

@@ -117,7 +117,7 @@
       <span class="breadcrumb-sep">›</span>
       <a href="colleges.html?type=iit">IITs</a>
       <span class="breadcrumb-sep">›</span>
-      <span class="breadcrumb-current">IIT Delhi</span>
+      <span class="breadcrumb-current" id="breadcrumbCollege">IIT Delhi</span>
     </nav>
   </div>
 </div>
@@ -793,5 +793,196 @@
 </div>
 
 <script src="eduquest.js?v=2"></script>
+<script>
+/* ── College Details — dynamic API loading ── */
+(function () {
+  const API = 'https://eduquest-backend.eduquest-api.workers.dev';
+  const slug = new URLSearchParams(window.location.search).get('slug');
+  const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  if (!slug) return; // keep hardcoded demo if no slug
+
+  // Show loading state in hero
+  const heroName = document.querySelector('.college-hero-name');
+  const heroMeta = document.querySelector('.college-hero-meta');
+  const heroBadges = document.querySelector('.college-hero-badges');
+  if (heroName) heroName.textContent = 'Loading…';
+
+  async function loadCollege() {
+    try {
+      const res = await fetch(`${API}/api/v1/colleges/${encodeURIComponent(slug)}`);
+      if (!res.ok) throw new Error(res.status);
+      const { data: c } = await res.json();
+
+      // Page title + breadcrumb
+      document.title = `${c.name} — Courses, Fees, Cutoffs 2026 | EduQuest`;
+      const bc = document.getElementById('breadcrumbCollege') || document.querySelector('.breadcrumb-current');
+      if (bc) bc.textContent = c.short_name || c.name;
+
+      // Hero banner bg
+      const banner = document.querySelector('.college-hero-banner');
+      if (banner && c.cover_url) {
+        banner.style.background = `linear-gradient(rgba(10,25,47,0.75),rgba(10,25,47,0.90)),url('${c.cover_url}') center/cover`;
+      }
+
+      // Hero logo
+      const crest = document.querySelector('.college-hero-crest');
+      if (crest && c.logo_url) {
+        crest.innerHTML = `<img src="${esc(c.logo_url)}" alt="" style="width:72px;height:72px;object-fit:contain;border-radius:8px;" onerror="this.replaceWith(document.createElement('i'))" />`;
+      }
+
+      // Badges
+      const ownerLabel = { public:'Government / Public', private:'Private', ppp:'Deemed University', autonomous:'Autonomous' }[c.ownership] || '';
+      if (heroBadges) {
+        const nirf = c.nirf_rank_overall ? `<span class="hero-badge-pill hero-badge-nirf"><i class="fa-solid fa-star"></i> NIRF #${c.nirf_rank_overall} Overall</span>` : '';
+        const naac = c.naac_grade ? `<span class="hero-badge-pill hero-badge-naac"><i class="fa-solid fa-circle-check"></i> NAAC ${esc(c.naac_grade)}</span>` : '';
+        heroBadges.innerHTML = nirf + naac + `<span class="hero-badge-pill hero-badge-public">${esc(ownerLabel)}</span>`;
+      }
+
+      // Name + meta
+      if (heroName) heroName.textContent = c.name;
+      const loc = [c.city, c.state].filter(Boolean).join(', ');
+      if (heroMeta) heroMeta.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${esc(loc)}${c.established_year ? ' · Est. ' + c.established_year : ''} · ${esc(ownerLabel)}`;
+
+      // Rating
+      const heroRating = document.querySelector('.college-hero-rating');
+      if (heroRating) {
+        if (c.avg_rating && c.avg_rating > 0) {
+          heroRating.innerHTML = `<div class="hero-rating-pill"><i class="fa-solid fa-star"></i> ${c.avg_rating.toFixed(1)} / 5.0</div>
+            <span class="hero-rating-reviews">${c.review_count || 0} Verified Reviews</span>`;
+        } else {
+          heroRating.innerHTML = `<span class="hero-rating-reviews">No reviews yet — be the first!</span>`;
+        }
+      }
+
+      // ── Overview tab ──
+      const aboutText = document.querySelector('.about-text');
+      const overview = c.overview && typeof c.overview === 'object' ? c.overview : {};
+      if (aboutText) {
+        aboutText.innerHTML = `<h3>About ${esc(c.name)}</h3>` +
+          (overview.about ? `<p>${esc(overview.about)}</p>` :
+            `<p>${esc(c.name)} is a ${esc(ownerLabel.toLowerCase())} institution located in ${esc(loc)}.</p>
+             <p>Data for this college is being updated. Check back soon for more details.</p>`);
+      }
+
+      const highlights = document.querySelector('.highlights-card');
+      if (highlights) {
+        const rows = [
+          c.established_year && ['Established', c.established_year],
+          c.city && ['City', c.city],
+          c.state && ['State', c.state],
+          c.naac_grade && ['NAAC Grade', c.naac_grade],
+          c.nirf_rank_overall && ['NIRF Rank', '#' + c.nirf_rank_overall + ' Overall'],
+          c.avg_rating > 0 && ['Student Rating', c.avg_rating.toFixed(1) + ' / 5.0'],
+          c.min_fee_inr && ['Min. Fee', '₹' + (c.min_fee_inr/100000).toFixed(1) + ' Lakhs'],
+          c.avg_package_lpa && ['Avg. Package', '₹' + c.avg_package_lpa + ' LPA'],
+          c.highest_package_lpa && ['Highest Package', '₹' + c.highest_package_lpa + ' LPA'],
+          c.website && ['Website', `<a href="${esc(c.website)}" target="_blank" rel="noopener" style="color:var(--sky)">${esc(c.website.replace(/^https?:\/\//,''))}</a>`],
+        ].filter(Boolean);
+        highlights.innerHTML = `<h4>Key Highlights</h4>` +
+          rows.map(([l, v]) => `<div class="highlight-row"><span class="hl-label">${l}</span><span class="hl-value">${v}</span></div>`).join('') +
+          (rows.length === 0 ? '<p style="color:var(--text-muted);font-size:13px">Details coming soon.</p>' : '');
+      }
+
+      // ── Courses tab ──
+      const coursesTbody = document.querySelector('#tab-courses tbody');
+      const coursesHeading = document.querySelector('#tab-courses h3');
+      if (coursesHeading) coursesHeading.textContent = `Courses & Fees at ${c.name}`;
+      if (coursesTbody) {
+        if (c.courses && c.courses.length) {
+          coursesTbody.innerHTML = c.courses.map(r => `<tr>
+            <td><span class="course-name">${esc(r.course_name || r.name || '—')}</span></td>
+            <td>${r.duration_months ? Math.round(r.duration_months/12) + ' Yrs' : '—'}</td>
+            <td><strong>${r.total_tuition_fee_inr ? '₹' + (r.total_tuition_fee_inr/100000).toFixed(1) + 'L' : '—'}</strong></td>
+            <td>${esc(r.degree_level || '—')}</td>
+            <td><button class="btn-exam-action trigger-lead-modal">Enquire</button></td>
+          </tr>`).join('');
+        } else {
+          coursesTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px">Course details not yet available for this college.</td></tr>`;
+        }
+      }
+
+      // ── Cutoffs tab ──
+      const cutoffsHeading = document.querySelector('#tab-cutoffs h3');
+      const cutoffsTbody = document.querySelector('#tab-cutoffs tbody');
+      if (cutoffsHeading) cutoffsHeading.textContent = `Admission Cutoffs — ${c.name}`;
+      if (cutoffsTbody) {
+        if (c.cutoffs_summary && c.cutoffs_summary.length) {
+          cutoffsTbody.innerHTML = c.cutoffs_summary.map(r => `<tr>
+            <td><strong>${esc(r.course_name || '—')}</strong></td>
+            <td class="rank-cell">${r.opening_value ?? '—'}</td>
+            <td class="rank-cell">${r.closing_value ?? '—'}</td>
+            <td class="rank-cell" style="color:var(--orange);font-weight:800">${r.closing_value ?? '—'}</td>
+            <td>${esc(r.exam_name || '—')} ${r.year || ''}</td>
+          </tr>`).join('');
+        } else {
+          cutoffsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:32px">Cutoff data not yet available for this college.</td></tr>`;
+        }
+      }
+
+      // ── Placements tab ──
+      const placementsHeading = document.querySelector('#tab-placements h3');
+      const placementsBanner = document.querySelector('.placement-stats-banner');
+      if (placementsHeading) placementsHeading.textContent = `Placement Report — ${c.name}`;
+      if (placementsBanner) {
+        if (c.avg_package_lpa || c.highest_package_lpa) {
+          placementsBanner.innerHTML = [
+            c.avg_package_lpa && `<div class="placement-stat-item"><span class="placement-stat-num">₹${c.avg_package_lpa} LPA</span><span class="placement-stat-label">Average CTC</span></div>`,
+            c.highest_package_lpa && `<div class="placement-stat-item"><span class="placement-stat-num">₹${c.highest_package_lpa} LPA</span><span class="placement-stat-label">Highest Package</span></div>`,
+          ].filter(Boolean).join('');
+        } else {
+          placementsBanner.innerHTML = `<div style="padding:32px;color:var(--text-muted);text-align:center;width:100%">Placement data not yet available for this college.</div>`;
+        }
+        // Clear recruiter section if no data
+        if (!c.avg_package_lpa) {
+          const rec = document.querySelector('.recruiters-grid');
+          if (rec) rec.style.display = 'none';
+          const recH = document.querySelector('#tab-placements h4');
+          if (recH) recH.style.display = 'none';
+        }
+      }
+
+      // ── Reviews tab ──
+      const reviewsHeading = document.querySelector('#tab-reviews h3');
+      const reviewsGrid = document.querySelector('.reviews-grid');
+      if (reviewsHeading) reviewsHeading.textContent = `Student Reviews — ${c.name}`;
+      if (reviewsGrid) {
+        if (c.top_reviews && c.top_reviews.length) {
+          reviewsGrid.innerHTML = c.top_reviews.map(r => {
+            const initials = (r.title || 'R').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+            const stars = Math.round(r.rating_overall || 0);
+            return `<div class="eduquest-review-card">
+              <div class="review-header">
+                <div class="reviewer-avatar">${initials}</div>
+                <div class="reviewer-meta"><p class="reviewer-name">Verified Student</p><p class="reviewer-course">${esc(r.title || '')}</p></div>
+                <div class="verified-student-tag"><i class="fa-solid fa-circle-check"></i> Verified</div>
+              </div>
+              <div class="review-ratings-row">
+                <div class="score-pill-overall">
+                  <span class="score-num">${(r.rating_overall || 0).toFixed(1)}</span>
+                  <span class="score-stars">${'<i class="fa-solid fa-star"></i>'.repeat(stars)}</span>
+                </div>
+              </div>
+              <div class="pros-cons-box">
+                ${r.pros ? `<div class="bullet-row"><span class="bullet-tag tag-pro">PRO</span><p class="bullet-text">${esc(r.pros)}</p></div>` : ''}
+                ${r.cons ? `<div class="bullet-row"><span class="bullet-tag tag-con">CON</span><p class="bullet-text">${esc(r.cons)}</p></div>` : ''}
+              </div>
+            </div>`;
+          }).join('');
+        } else {
+          reviewsGrid.innerHTML = `<div style="padding:40px;text-align:center;color:var(--text-muted);width:100%">No reviews yet for this college. Be the first to review!</div>`;
+        }
+      }
+
+    } catch (e) {
+      const heroName = document.querySelector('.college-hero-name');
+      if (heroName) heroName.textContent = 'College not found';
+      console.error('College load failed:', e);
+    }
+  }
+
+  loadCollege();
+})();
+</script>
 </body>
 </html>

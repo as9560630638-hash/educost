@@ -558,5 +558,190 @@
 </div>
 
 <script src="eduquest.js?v=2"></script>
+<script>
+(function () {
+  var API = 'https://eduquest-backend.eduquest-api.workers.dev';
+  var params = new URLSearchParams(window.location.search);
+  var slugs = params.get('slugs');
+
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function fmt(v, suffix) {
+    if (v == null || v === '') return '—';
+    return esc(v) + (suffix ? ' ' + suffix : '');
+  }
+  function fmtFee(v) {
+    if (!v) return '—';
+    var l = v / 100000;
+    return l >= 1 ? '₹' + l.toFixed(2) + ' L/yr' : '₹' + Number(v).toLocaleString('en-IN');
+  }
+  function fmtPkg(v) {
+    if (!v) return '—';
+    return '₹' + Number(v).toFixed(2) + ' LPA';
+  }
+
+  // Show "no slugs" state if URL doesn't have slugs
+  if (!slugs) {
+    var sec = document.querySelector('.compare-section');
+    if (sec) {
+      sec.innerHTML = '<div class="container" style="padding:60px 20px;text-align:center;">' +
+        '<div style="font-size:48px;margin-bottom:16px;">🏫</div>' +
+        '<h2 style="font-family:var(--font-head);font-size:24px;font-weight:800;color:var(--text-primary);margin-bottom:12px;">No Colleges Selected for Comparison</h2>' +
+        '<p style="font-size:15px;color:var(--text-muted);max-width:480px;margin:0 auto 28px;">Go to the college listing page, check the compare box on 2–4 colleges, then click "Compare Now".</p>' +
+        '<a href="colleges.html" class="btn-card-primary" style="font-size:15px;padding:14px 28px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;"><i class="fa-solid fa-landmark"></i> Browse Colleges →</a>' +
+        '</div>';
+    }
+    return;
+  }
+
+  // Fetch compare data
+  fetch(API + '/api/v1/colleges/compare?slugs=' + encodeURIComponent(slugs))
+    .then(function (r) { return r.json(); })
+    .then(function (json) {
+      var colleges = json.data;
+      if (!colleges || colleges.length < 2) {
+        throw new Error('Not enough colleges found');
+      }
+      renderCompare(colleges);
+    })
+    .catch(function (err) {
+      var sec = document.querySelector('.compare-section');
+      if (sec) {
+        sec.innerHTML = '<div class="container" style="padding:60px 20px;text-align:center;">' +
+          '<h2 style="font-family:var(--font-head);font-size:20px;color:var(--text-primary);">Could not load comparison data</h2>' +
+          '<p style="color:var(--text-muted);margin:12px 0 24px;">Please try selecting colleges again from the listing page.</p>' +
+          '<a href="colleges.html" class="btn-card-primary" style="padding:12px 24px;border-radius:12px;display:inline-flex;gap:8px;"><i class="fa-solid fa-landmark"></i> Back to Colleges</a>' +
+          '</div>';
+      }
+    });
+
+  function renderCompare(list) {
+    // Update page title & hero
+    var names = list.map(function (c) { return c.short_name || c.name; }).join(' vs ');
+    document.title = names + ' — Compare | EduQuest';
+    var h1 = document.querySelector('.compare-page-hero h1');
+    if (h1) h1.textContent = 'Compare: ' + names;
+    var hp = document.querySelector('.compare-page-hero p');
+    if (hp) hp.textContent = 'Side-by-side comparison — fees, placements, ratings & more.';
+
+    // Summary cards
+    var grid = document.querySelector('.summary-card-grid');
+    if (grid) {
+      grid.style.gridTemplateColumns = 'repeat(' + list.length + ',1fr)';
+      grid.innerHTML = list.map(function (c) {
+        return '<div class="summary-card">' +
+          (c.logo_url
+            ? '<img src="' + esc(c.logo_url) + '" style="width:52px;height:52px;object-fit:contain;border-radius:8px;margin-bottom:10px;" onerror="this.style.display=\'none\'" />'
+            : '<div class="summary-card-icon"><i class="fa-solid fa-building-columns"></i></div>') +
+          '<div class="summary-card-name">' + esc(c.short_name || c.name) + '</div>' +
+          '<div class="summary-card-loc"><i class="fa-solid fa-location-dot"></i> ' + esc([c.city, c.state].filter(Boolean).join(', ') || 'India') + '</div>' +
+          (c.nirf_rank_overall ? '<span class="summary-card-rank"><i class="fa-solid fa-star"></i> NIRF #' + esc(c.nirf_rank_overall) + '</span>' : '') +
+          '<a href="college-details.html?slug=' + esc(c.slug) + '" style="margin-top:12px;font-size:12.5px;color:var(--sky);">View Full Profile →</a>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Build table
+    var wrapper = document.querySelector('.compare-table-wrapper');
+    if (!wrapper) return;
+
+    // Find numeric best values for winner badges
+    function findBest(key, dir) {
+      // dir: 'low' = lowest wins, 'high' = highest wins
+      var vals = list.map(function (c) { return parseFloat(c[key]); }).filter(function (v) { return !isNaN(v); });
+      if (!vals.length) return null;
+      return dir === 'low' ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
+    }
+    var bestNirf     = findBest('nirf_rank_overall', 'low');
+    var bestRating   = findBest('avg_rating', 'high');
+    var bestFee      = findBest('min_fee_inr', 'low');
+    var bestPkg      = findBest('avg_package_lpa', 'high');
+    var bestHighPkg  = findBest('highest_package_lpa', 'high');
+
+    function winner(val, best, suffix) {
+      if (best == null || val == null || isNaN(val)) return '';
+      return parseFloat(val) === best
+        ? ' <span class="compare-winner-badge"><i class="fa-solid fa-trophy"></i> Best</span>'
+        : '';
+    }
+
+    var colHeaders = list.map(function (c) {
+      return '<th class="compare-col-header">' +
+        (c.logo_url
+          ? '<img src="' + esc(c.logo_url) + '" style="width:44px;height:44px;object-fit:contain;border-radius:8px;margin-bottom:6px;" onerror="this.style.display=\'none\'" />'
+          : '<div class="compare-college-crest"><i class="fa-solid fa-building-columns"></i></div>') +
+        '<div class="compare-college-name">' + esc(c.short_name || c.name) + '</div>' +
+        '<div class="compare-college-loc"><i class="fa-solid fa-location-dot"></i> ' + esc([c.city, c.state].filter(Boolean).join(', ') || 'India') + '</div>' +
+        (c.nirf_rank_overall ? '<span style="display:inline-block;background:var(--gold-light);color:#854d0e;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:6px;">NIRF #' + esc(c.nirf_rank_overall) + '</span>' : '') +
+        '</th>';
+    }).join('');
+
+    function row(label, cells, alt) {
+      return '<tr' + (alt ? ' class="compare-row-alt"' : '') + '>' +
+        '<td class="compare-row-label">' + label + '</td>' +
+        cells.join('') + '</tr>';
+    }
+
+    var rows = [
+      row('College Name', list.map(function (c) {
+        return '<td class="compare-col-value"><strong>' + esc(c.name) + '</strong></td>';
+      })),
+      row('Location', list.map(function (c) {
+        return '<td class="compare-col-value">' + esc([c.city, c.state].filter(Boolean).join(', ') || '—') + '</td>';
+      }), true),
+      row('Institute Type', list.map(function (c) {
+        var t = c.ownership === 'public' ? 'Government / Public' : c.ownership === 'private' ? 'Private' : c.ownership || '—';
+        return '<td class="compare-col-value">' + esc(t) + '</td>';
+      })),
+      row('Established', list.map(function (c) {
+        return '<td class="compare-col-value">' + fmt(c.established_year) + '</td>';
+      }), true),
+      row('NIRF Rank (Overall)', list.map(function (c) {
+        var v = c.nirf_rank_overall;
+        var w = winner(v, bestNirf, '');
+        return '<td class="compare-col-value">' + (v ? '<strong' + (parseFloat(v) === bestNirf ? ' class="compare-winner"' : '') + '>#' + esc(v) + '</strong>' + w : '—') + '</td>';
+      })),
+      row('NAAC Grade', list.map(function (c) {
+        return '<td class="compare-col-value"><strong>' + fmt(c.naac_grade) + '</strong></td>';
+      }), true),
+      row('Min. Annual Fee', list.map(function (c) {
+        var v = c.min_fee_inr;
+        var w = winner(v, bestFee, '');
+        return '<td class="compare-col-value">' + (v ? '<strong' + (parseFloat(v) === bestFee ? ' class="compare-winner"' : '') + '>' + fmtFee(v) + '</strong>' + w : '—') + '</td>';
+      })),
+      row('Avg. Placement Package', list.map(function (c) {
+        var v = c.avg_package_lpa;
+        var w = winner(v, bestPkg, '');
+        return '<td class="compare-col-value">' + (v ? '<strong' + (parseFloat(v) === bestPkg ? ' class="compare-winner"' : '') + '>' + fmtPkg(v) + '</strong>' + w : '—') + '</td>';
+      }), true),
+      row('Highest Package', list.map(function (c) {
+        var v = c.highest_package_lpa;
+        var w = winner(v, bestHighPkg, '');
+        return '<td class="compare-col-value">' + (v ? '<strong' + (parseFloat(v) === bestHighPkg ? ' class="compare-winner"' : '') + '>' + fmtPkg(v) + '</strong>' + w : '—') + '</td>';
+      })),
+      row('Student Rating', list.map(function (c) {
+        var v = c.avg_rating;
+        var w = winner(v, bestRating, '');
+        return '<td class="compare-col-value">' + (v ? '<strong' + (parseFloat(v) === bestRating ? ' class="compare-winner"' : '') + '><i class="fa-solid fa-star" style="color:var(--gold)"></i> ' + parseFloat(v).toFixed(1) + ' / 5.0</strong>' + w +
+          (c.review_count ? '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + esc(c.review_count) + ' Reviews</div>' : '') : '—') + '</td>';
+      }), true),
+      '<tr style="background:var(--bg-mid)"><td class="compare-row-label" style="font-weight:800;color:var(--text-primary);">Quick Actions</td>' +
+        list.map(function (c) {
+          return '<td class="compare-col-value" style="text-align:center;">' +
+            '<div style="display:flex;flex-direction:column;gap:8px;align-items:center;">' +
+            '<a href="college-details.html?slug=' + esc(c.slug) + '" class="btn-card-primary" style="width:100%;justify-content:center;">View Profile →</a>' +
+            '<button class="btn-card-outline trigger-lead-modal" style="width:100%;">Get Brochure</button>' +
+            '</div></td>';
+        }).join('') + '</tr>',
+    ];
+
+    wrapper.innerHTML = '<table class="compare-table"><thead><tr>' +
+      '<th class="compare-row-label" style="background:var(--navy-dark);color:#94a3b8;">Metric</th>' +
+      colHeaders +
+      '</tr></thead><tbody>' + rows.join('') + '</tbody></table>';
+  }
+})();
+</script>
 </body>
 </html>
