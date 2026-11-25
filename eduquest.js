@@ -810,7 +810,10 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
   // Pre-fill from URL and initial fetch
   const urlP = new URLSearchParams(window.location.search);
   const urlQ = urlP.get('q');
-  if (urlQ && nameEl) nameEl.value = urlQ;
+  // Always reset to prevent browser from restoring old field values
+  if (nameEl) nameEl.value = urlQ || '';
+  const countEl2 = document.getElementById('resultsCount');
+  if (countEl2) countEl2.textContent = '0';
 
   load(true);
 })();
