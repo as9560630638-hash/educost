@@ -679,6 +679,138 @@ const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
 })();
 
 /* ============================================================
+   COLLEGES PAGE — Live API data
+   ============================================================ */
+(function () {
+  const container = document.getElementById('collegeListingsContainer');
+  if (!container) return;
+
+  let cursor = null;
+  let busy = false;
+  let timer = null;
+
+  function params(withCursor) {
+    const p = new URLSearchParams();
+    const sort = document.getElementById('sortSelect');
+    p.set('sort', (sort && sort.value) || 'popular');
+    const name = document.getElementById('filterByNameInput');
+    if (name && name.value.trim()) p.set('q', name.value.trim());
+    const fee = document.getElementById('feeRangeSlider');
+    if (fee && parseInt(fee.value) < parseInt(fee.max)) p.set('maxFee', fee.value);
+    const tags = [...document.querySelectorAll('.filter-checkbox-item input[type=checkbox]:checked')]
+      .map(c => c.value).join(',');
+    if (tags) p.set('tags', tags);
+    p.set('limit', '20');
+    if (withCursor && cursor) p.set('cursor', cursor);
+    return p;
+  }
+
+  function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function card(c) {
+    const ownerMap = { public:'Government', private:'Private', ppp:'Deemed University', autonomous:'Autonomous' };
+    const rank = c.nirf_rank_overall ? `<span class="college-rank-tag"><i class="fa-solid fa-star"></i> NIRF #${c.nirf_rank_overall}</span>` : '';
+    const naac = c.naac_grade ? `<span class="college-accreditation-pill">${esc(c.naac_grade)}</span>` : '';
+    const bg = c.cover_url
+      ? `background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.3)),url('${esc(c.cover_url)}') center/cover no-repeat`
+      : 'background:linear-gradient(135deg,#0a2744,#1e3a5f)';
+    const logo = c.logo_url
+      ? `<img src="${esc(c.logo_url)}" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.replaceWith(document.createElement('i'))" />`
+      : `<i class="fa-solid fa-landmark"></i>`;
+    const rating = c.avg_rating > 0
+      ? `<div class="college-rating-badge"><span class="star-icon"><i class="fa-solid fa-star"></i></span> ${c.avg_rating.toFixed(1)}</div>` : '';
+    const loc = [c.city, c.state].filter(Boolean).join(', ');
+    const own = ownerMap[c.ownership] || '';
+    const fee = c.min_fee_inr ? `₹${(c.min_fee_inr/100000).toFixed(1)}L` : '—';
+    const pkg = c.avg_package_lpa ? `₹${c.avg_package_lpa} LPA` : '—';
+    const hpkg = c.highest_package_lpa ? `Highest ₹${c.highest_package_lpa} LPA` : '';
+    return `<div class="college-search-card" data-name="${esc((c.name||'').toLowerCase())}"
+        data-tags="${esc((c.tags||[]).join(','))},${esc(c.ownership||'')}" data-nirf="${c.nirf_rank_overall||9999}"
+        data-pkg="${c.avg_package_lpa ? c.avg_package_lpa*100000 : 0}" data-fee="${c.min_fee_inr||0}" data-rating="${c.avg_rating||0}">
+      <div class="card-hero-banner" style="${bg}">${rank}${naac}</div>
+      <div class="card-body-content">
+        <div class="title-logo-row">
+          <div class="college-crest-box">${logo}</div>
+          <div class="title-details">
+            <h3 class="college-name">${esc(c.name)}</h3>
+            <p class="college-location"><i class="fa-solid fa-location-dot"></i> ${esc(loc)}${own ? ' · '+own : ''}</p>
+          </div>${rating}
+        </div>
+        <div class="college-stats-grid">
+          <div class="stat-col"><span class="stat-label">Min. Fee</span><span class="stat-value">${fee}</span><span class="stat-sub">Annual / Total</span></div>
+          <div class="stat-col"><span class="stat-label">Avg. Package</span><span class="stat-value highlight-green">${pkg}</span><span class="stat-sub">${esc(hpkg)}</span></div>
+          <div class="stat-col"><span class="stat-label">NIRF Rank</span><span class="stat-value highlight-blue">${c.nirf_rank_overall ? '#'+c.nirf_rank_overall : '—'}</span><span class="stat-sub">Overall</span></div>
+        </div>
+        <div class="card-footer-actions">
+          <label class="compare-toggle-label"><input type="checkbox" class="compare-chk" data-college="${esc(c.name)}"> + Compare</label>
+          <div class="btn-group-right">
+            <a href="college-details.html?slug=${esc(c.slug)}" class="btn-card-outline">View Details</a>
+            <button class="btn-card-outline trigger-lead-modal">Brochure</button>
+            <button class="btn-card-primary trigger-lead-modal">Apply Now →</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async function load(reset) {
+    if (busy) return;
+    busy = true;
+    if (reset) {
+      cursor = null;
+      container.innerHTML = '<div style="padding:60px 0;text-align:center;color:#64748b"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:#1877F2"></i><p style="margin-top:16px">Loading colleges…</p></div>';
+      const old = document.getElementById('eq-load-more');
+      if (old) old.remove();
+    }
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/colleges?${params(!reset ? true : false)}`);
+      if (!res.ok) throw new Error(res.status);
+      const { data: list, meta } = await res.json();
+      if (reset) container.innerHTML = list.length ? '' : '<div style="padding:60px 0;text-align:center;color:#64748b">No colleges match your filters.</div>';
+      if (list.length) container.insertAdjacentHTML('beforeend', list.map(card).join(''));
+      const countEl = document.getElementById('resultsCount');
+      if (countEl) countEl.textContent = container.querySelectorAll('.college-search-card').length;
+      let lm = document.getElementById('eq-load-more');
+      if (meta.hasMore) {
+        cursor = meta.cursor;
+        if (!lm) {
+          lm = document.createElement('div');
+          lm.id = 'eq-load-more';
+          lm.style.cssText = 'text-align:center;padding:32px 0 8px';
+          lm.innerHTML = '<button class="btn-card-outline" style="padding:12px 36px;font-size:15px">Load More Colleges</button>';
+          container.after(lm);
+          lm.querySelector('button').addEventListener('click', () => load(false));
+        }
+      } else {
+        cursor = null;
+        if (lm) lm.remove();
+      }
+    } catch { if (reset) container.innerHTML = '<div style="padding:60px 0;text-align:center;color:#ef4444">Failed to load colleges. Please refresh.</div>'; }
+    busy = false;
+  }
+
+  function schedule() { clearTimeout(timer); timer = setTimeout(() => load(true), 350); }
+
+  document.querySelectorAll('.filter-checkbox-item input[type=checkbox]').forEach(el => el.addEventListener('change', schedule));
+  const nameEl = document.getElementById('filterByNameInput');
+  if (nameEl) nameEl.addEventListener('input', schedule);
+  const feeEl = document.getElementById('feeRangeSlider');
+  if (feeEl) feeEl.addEventListener('input', schedule);
+  const sortEl = document.getElementById('sortSelect');
+  if (sortEl) sortEl.addEventListener('change', () => load(true));
+  document.querySelectorAll('.fee-bucket-btn').forEach(b => b.addEventListener('click', schedule));
+  document.addEventListener('click', e => { if (e.target.closest('#clearAllFilters')) setTimeout(schedule, 50); });
+
+  // Pre-fill from URL and initial fetch
+  const urlP = new URLSearchParams(window.location.search);
+  const urlQ = urlP.get('q'), urlStream = urlP.get('stream');
+  if (urlQ && nameEl) nameEl.value = urlQ;
+  if (urlStream && urlStream !== 'all' && !urlQ && nameEl) nameEl.value = urlStream;
+
+  load(true);
+})();
+
+/* ============================================================
    ENHANCEMENT LAYER — Scroll Reveals · 3D Tilt · Counter
    ============================================================ */
 (function () {

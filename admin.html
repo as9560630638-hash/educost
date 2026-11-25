@@ -275,7 +275,7 @@ function tryParseUGC(wb) {
         state,
         ownership,
         address,
-        is_published: false,
+        is_published: true,
         tags: `ugc-approved,${ownership === 'public' ? 'govt' : ownership === 'ppp' ? 'deemed' : 'private'}`,
       };
     }).filter(Boolean);
