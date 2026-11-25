@@ -146,8 +146,13 @@ async function requestOtp() {
   if (!email) return;
   setMsg('Sending OTP…');
   const r = await api('/api/v1/auth/otp/request', { email, turnstile_token: 'dev-bypass' });
-  if (r.ok) { document.getElementById('otp-step1').classList.add('hidden'); document.getElementById('otp-step2').classList.remove('hidden'); setMsg(''); }
-  else setMsg((await r.json()).error?.message ?? 'Failed', true);
+  if (r.ok) {
+    const body = await r.json();
+    document.getElementById('otp-step1').classList.add('hidden');
+    document.getElementById('otp-step2').classList.remove('hidden');
+    if (body.data?.dev_otp) setMsg(`DEV MODE — Your OTP is: ${body.data.dev_otp}`, false);
+    else setMsg('');
+  } else setMsg((await r.json()).error?.message ?? 'Failed', true);
 }
 
 async function verifyOtp() {
