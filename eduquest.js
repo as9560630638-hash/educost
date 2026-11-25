@@ -2,6 +2,8 @@
    EduQuest — Interactive Features
    ============================================================ */
 
+const API_BASE = 'https://eduquest-backend.eduquest-api.workers.dev';
+
 (function () {
   'use strict';
 
