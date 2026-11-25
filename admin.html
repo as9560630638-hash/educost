@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EduQuest Admin</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,sans-serif;background:#f0f2f5;color:#1c1e21;min-height:100vh}
+  header{background:#1877F2;color:#fff;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
+  header h1{font-size:20px;font-weight:700}
+  .badge{background:rgba(255,255,255,.2);padding:4px 10px;border-radius:12px;font-size:13px}
+  main{max-width:900px;margin:40px auto;padding:0 16px}
+  .card{background:#fff;border-radius:12px;padding:28px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  h2{font-size:17px;font-weight:600;margin-bottom:16px;color:#1877F2}
+  label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#606770}
+  input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+  input:focus{border-color:#1877F2;box-shadow:0 0 0 3px rgba(24,119,242,.15)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  .btn-primary{background:#1877F2;color:#fff}
+  .btn-primary:hover{background:#1565C0}
+  .btn-primary:disabled{background:#90b8f8;cursor:not-allowed}
+  .btn-outline{background:#fff;color:#1877F2;border:1.5px solid #1877F2}
+  .btn-outline:hover{background:#f0f4ff}
+  .btn-danger{background:#e74c3c;color:#fff}
+  .drop-zone{border:2px dashed #1877F2;border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:.2s;background:#f8fbff}
+  .drop-zone:hover,.drop-zone.drag-over{background:#e8f0fe;border-color:#0d47a1}
+  .drop-zone p{color:#606770;margin-top:8px;font-size:14px}
+  .drop-icon{font-size:40px}
+  .preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
+  .stat{background:#f0f4ff;border-radius:10px;padding:16px;text-align:center}
+  .stat-num{font-size:28px;font-weight:700;color:#1877F2}
+  .stat-label{font-size:12px;color:#606770;margin-top:4px}
+  .log{background:#f8f9fa;border-radius:8px;padding:14px;font-size:13px;font-family:monospace;max-height:200px;overflow-y:auto;line-height:1.6}
+  .log .ok{color:#2ecc71} .log .err{color:#e74c3c} .log .info{color:#606770}
+  .hidden{display:none}
+  .row{display:flex;gap:12px}
+  .row input{flex:1}
+  .alert{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px}
+  .alert-info{background:#e8f0fe;color:#1565c0}
+  .alert-success{background:#e8f8f0;color:#1a7a40}
+  .alert-error{background:#fdecea;color:#c0392b}
+  .template-cols{font-size:12px;color:#606770;background:#f8f9fa;padding:12px;border-radius:8px;line-height:1.8}
+  .template-cols b{color:#1877F2}
+  details summary{cursor:pointer;font-size:13px;color:#1877F2;font-weight:500;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>EduQuest Admin</h1>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="badge" id="user-badge" style="display:none"></span>
+    <button class="btn btn-outline" id="logout-btn" style="display:none;background:transparent;color:#fff;border-color:rgba(255,255,255,.5)" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Login -->
+  <div class="card" id="login-section">
+    <h2>Admin Login</h2>
+    <div class="alert alert-info">Enter your admin email to receive a one-time password.</div>
+    <div id="otp-step1">
+      <label>Email</label>
+      <div class="row" style="margin-bottom:12px">
+        <input type="email" id="email-input" placeholder="admin@eduquest.in">
+        <button class="btn btn-primary" onclick="requestOtp()">Send OTP</button>
+      </div>
+    </div>
+    <div id="otp-step2" class="hidden">
+      <label>One-Time Password</label>
+      <div class="row">
+        <input type="text" id="otp-input" placeholder="6-digit code" maxlength="6" inputmode="numeric">
+        <button class="btn btn-primary" onclick="verifyOtp()">Verify</button>
+      </div>
+      <p style="font-size:12px;color:#606770;margin-top:8px">Didn't get it? <a href="#" onclick="showStep1()">Resend</a></p>
+    </div>
+    <div id="login-msg" style="margin-top:12px;font-size:13px"></div>
+  </div>
+
+  <!-- Import panel -->
+  <div id="import-section" class="hidden">
+
+    <div class="card">
+      <h2>Import from Excel</h2>
+
+      <div class="alert alert-info">
+        Your Excel file should have up to 4 sheets: <b>Colleges</b>, <b>Exams</b>, <b>Courses</b>, <b>Cutoffs</b>.<br>
+        First row must be the header. Only the sheets you include will be imported.
+      </div>
+
+      <details style="margin-bottom:16px">
+        <summary>View expected column names per sheet</summary>
+        <div class="template-cols" style="margin-top:8px">
+          <b>Colleges:</b> slug, name, short_name, city, state, ownership (govt/private/deemed), naac_grade, nirf_rank_overall, nirf_rank_engineering, nirf_rank_management, nirf_rank_medical, avg_rating, min_fee_inr, max_fee_inr, avg_package_lpa, highest_package_lpa, established_year, website, tags (comma-separated), is_published (yes/no)<br><br>
+          <b>Exams:</b> slug, name, stream, score_type (rank/percentile/marks)<br><br>
+          <b>Courses:</b> slug, name, degree_level (undergraduate/postgraduate/doctoral/diploma/certificate), stream, duration_months<br><br>
+          <b>Cutoffs:</b> college_slug, course_slug, exam_slug, year, round, category (general/obc_ncl/sc/st/ews/pwd), quota (all_india/home_state/other_state), gender (gender_neutral/female_only), opening_value, closing_value
+        </div>
+      </details>
+
+      <button class="btn btn-outline" style="margin-bottom:20px" onclick="downloadTemplate()">⬇ Download Template</button>
+
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div class="drop-icon">📂</div>
+        <strong>Drag & drop your Excel file here</strong>
+        <p>or click to browse (.xlsx, .xls, .csv)</p>
+      </div>
+      <input type="file" id="file-input" accept=".xlsx,.xls,.csv" class="hidden" onchange="handleFile(this.files[0])">
+    </div>
+
+    <!-- Preview -->
+    <div class="card hidden" id="preview-card">
+      <h2>Preview</h2>
+      <div class="preview-grid" id="preview-grid"></div>
+      <div id="preview-warnings" style="margin-bottom:12px"></div>
+      <button class="btn btn-primary" id="import-btn" onclick="runImport()">Import All Data</button>
+    </div>
+
+    <!-- Results -->
+    <div class="card hidden" id="results-card">
+      <h2>Results</h2>
+      <div class="log" id="log"></div>
+      <button class="btn btn-outline" style="margin-top:12px" onclick="resetImport()">Import Another File</button>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ─── Config ────────────────────────────────────────────────────────────────────
+const API = 'https://eduquesto.vercel.app';  // change to your backend URL
+
+// ─── State ────────────────────────────────────────────────────────────────────
+let token = sessionStorage.getItem('eq_admin_token') ?? null;
+let parsed = null;
+
+// ─── Boot ────────────────────────────────────────────────────────────────────
+if (token) showImport();
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
+async function requestOtp() {
+  const email = document.getElementById('email-input').value.trim();
+  if (!email) return;
+  setMsg('Sending OTP…');
+  const r = await api('/api/v1/auth/otp/request', { email, turnstile_token: 'dev-bypass' });
+  if (r.ok) { document.getElementById('otp-step1').classList.add('hidden'); document.getElementById('otp-step2').classList.remove('hidden'); setMsg(''); }
+  else setMsg((await r.json()).error?.message ?? 'Failed', true);
+}
+
+async function verifyOtp() {
+  const email = document.getElementById('email-input').value.trim();
+  const otp   = document.getElementById('otp-input').value.trim();
+  setMsg('Verifying…');
+  const r = await api('/api/v1/auth/otp/verify', { email, otp });
+  if (r.ok) {
+    const { data } = await r.json();
+    if (data.user.role !== 'admin') { setMsg('Not an admin account', true); return; }
+    token = data.access_token;
+    sessionStorage.setItem('eq_admin_token', token);
+    showImport(data.user.email);
+  } else setMsg((await r.json()).error?.message ?? 'Failed', true);
+}
+
+function showStep1() {
+  document.getElementById('otp-step1').classList.remove('hidden');
+  document.getElementById('otp-step2').classList.add('hidden');
+}
+
+function logout() {
+  token = null; sessionStorage.removeItem('eq_admin_token');
+  document.getElementById('import-section').classList.add('hidden');
+  document.getElementById('login-section').classList.remove('hidden');
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('user-badge').style.display = 'none';
+}
+
+function showImport(email) {
+  document.getElementById('login-section').classList.add('hidden');
+  document.getElementById('import-section').classList.remove('hidden');
+  if (email) {
+    document.getElementById('user-badge').textContent = email;
+    document.getElementById('user-badge').style.display = '';
+    document.getElementById('logout-btn').style.display = '';
+  }
+}
+
+function setMsg(msg, isErr = false) {
+  const el = document.getElementById('login-msg');
+  el.textContent = msg;
+  el.style.color = isErr ? '#e74c3c' : '#1877F2';
+}
+
+// ─── Drag & Drop ──────────────────────────────────────────────────────────────
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const wb = XLSX.read(e.target.result, { type: 'array', cellDates: true });
+    parsed = parseWorkbook(wb);
+    showPreview();
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ─── Parsing ─────────────────────────────────────────────────────────────────
+
+function normalizeKey(k) {
+  return String(k).toLowerCase().trim().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+}
+function normalizeRow(row) {
+  const out = {};
+  for (const [k, v] of Object.entries(row)) out[normalizeKey(k)] = v;
+  return out;
+}
+
+function toSlug(name) {
+  return name.toLowerCase().replace(/['"()\[\]]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0, 100);
+}
+
+// Best-effort: take last comma-part that isn't a zip code or state name
+function extractCity(address, state) {
+  const parts = address.split(',').map(s => s.trim()).filter(Boolean);
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i];
+    if (/^\d+/.test(p)) continue;
+    if (p.toLowerCase() === state.toLowerCase()) continue;
+    if (p.length < 2) continue;
+    return p.replace(/\s+H\.?P\.?.*$/i,'').replace(/\s+\d+.*$/,'').trim();
+  }
+  return state;
+}
+
+const OWNERSHIP_MAP = {
+  state: 'public', central: 'public', govt: 'public', government: 'public',
+  private: 'private',
+  'deemed to be universities': 'ppp', deemed: 'ppp', ppp: 'ppp',
+  autonomous: 'autonomous',
+};
+
+// ─── UGC format: row 1 = decorative title, row 2 = real headers ───────────────
+function tryParseUGC(wb) {
+  for (const sheetName of wb.SheetNames) {
+    const ws = wb.Sheets[sheetName];
+    // Read from row index 1 (the actual header row in UGC files)
+    const rows = XLSX.utils.sheet_to_json(ws, { range: 1, defval: null });
+    if (!rows.length) continue;
+    // Detect by checking for "Name of the University" column
+    if (!Object.keys(rows[0]).some(k => /name.*university/i.test(k))) continue;
+
+    const colleges = rows.map(r => {
+      const name = String(r['Name of the University'] || '').trim();
+      if (!name) return null;
+      const typeStr = String(r['Type'] || '').toLowerCase().trim();
+      const ownership = OWNERSHIP_MAP[typeStr] ?? 'private';
+      const address = String(r['Address'] || '').trim();
+      const state = String(r['state'] || r['State'] || '').trim();
+      const city = extractCity(address, state);
+      return {
+        slug: toSlug(name),
+        name,
+        city: city || state,
+        state,
+        ownership,
+        address,
+        is_published: false,
+        tags: `ugc-approved,${ownership === 'public' ? 'govt' : ownership === 'ppp' ? 'deemed' : 'private'}`,
+      };
+    }).filter(Boolean);
+
+    // Deduplicate slugs: if two universities generate the same slug, append -2, -3, etc.
+    const seen = new Map();
+    for (const col of colleges) {
+      const base = col.slug;
+      const count = (seen.get(base) ?? 0) + 1;
+      seen.set(base, count);
+      if (count > 1) col.slug = `${base}-${count}`;
+    }
+
+    return { colleges, exams: [], courses: [], cutoffs: [], format: 'UGC' };
+  }
+  return null;
+}
+
+// ─── EduQuest template format: named sheets ───────────────────────────────────
+const SHEET_ALIASES = {
+  colleges: ['colleges','college','collages'],
+  exams: ['exams','exam'],
+  courses: ['courses','course'],
+  cutoffs: ['cutoffs','cutoff','cutoff data','rankdata'],
+};
+
+function findSheet(wb, key) {
+  return wb.SheetNames.find(n => SHEET_ALIASES[key].includes(n.toLowerCase().trim()));
+}
+function sheetToRows(wb, name) {
+  if (!name) return [];
+  return XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: null });
+}
+
+function parseWorkbook(wb) {
+  // Try UGC format first
+  const ugc = tryParseUGC(wb);
+  if (ugc) return ugc;
+
+  // Fall back to EduQuest template format
+  const colleges = sheetToRows(wb, findSheet(wb, 'colleges')).map(r => {
+    const n = normalizeRow(r);
+    return { ...n,
+      slug: n.slug || toSlug(String(n.name || '')),
+      ownership: OWNERSHIP_MAP[String(n.ownership ?? '').toLowerCase()] ?? n.ownership,
+      is_published: /^(yes|true|1|y)$/i.test(String(n.is_published ?? '')),
+    };
+  });
+  const exams   = sheetToRows(wb, findSheet(wb, 'exams')).map(normalizeRow);
+  const courses = sheetToRows(wb, findSheet(wb, 'courses')).map(normalizeRow);
+  const cutoffs = sheetToRows(wb, findSheet(wb, 'cutoffs')).map(normalizeRow);
+  return { colleges, exams, courses, cutoffs, format: 'EduQuest' };
+}
+
+// ─── Preview ──────────────────────────────────────────────────────────────────
+function showPreview() {
+  const grid = document.getElementById('preview-grid');
+  const stats = [
+    ['Colleges', parsed.colleges.length],
+    ['Exams',    parsed.exams.length],
+    ['Courses',  parsed.courses.length],
+    ['Cutoffs',  parsed.cutoffs.length],
+  ];
+  grid.innerHTML = stats.map(([label, n]) => `
+    <div class="stat">
+      <div class="stat-num">${n}</div>
+      <div class="stat-label">${label}</div>
+    </div>`).join('');
+
+  const warn = document.getElementById('preview-warnings');
+  if (parsed.format === 'UGC') {
+    warn.innerHTML = `
+      <div class="alert alert-info">
+        <b>UGC format detected.</b> Importing ${parsed.colleges.length} universities with name, state, type, and address.<br>
+        NIRF rankings, fees, ratings, and cutoffs will be <b>empty</b> — you can fill those in later via another upload or directly in the admin panel.
+        College slugs are auto-generated from names.
+      </div>`;
+  } else {
+    warn.innerHTML = '';
+  }
+
+  document.getElementById('preview-card').classList.remove('hidden');
+  document.getElementById('results-card').classList.add('hidden');
+  document.getElementById('log').innerHTML = '';
+}
+
+// ─── Import ───────────────────────────────────────────────────────────────────
+async function runImport() {
+  const btn = document.getElementById('import-btn');
+  btn.disabled = true; btn.textContent = 'Importing…';
+
+  document.getElementById('results-card').classList.remove('hidden');
+  const log = document.getElementById('log');
+  log.innerHTML = '<span class="info">Starting import…</span>\n';
+
+  const r = await authApi('/api/v1/admin/import', parsed);
+  if (r.ok) {
+    const { data } = await r.json();
+    log.innerHTML += [
+      `<span class="ok">✅ Colleges: ${data.colleges}</span>`,
+      `<span class="ok">✅ Exams:    ${data.exams}</span>`,
+      `<span class="ok">✅ Courses:  ${data.courses}</span>`,
+      `<span class="ok">✅ Cutoffs:  ${data.cutoffs}</span>`,
+      `<span class="ok">✅ Done. Search index rebuilding in background.</span>`,
+    ].join('\n');
+  } else {
+    const err = await r.json().catch(() => ({}));
+    log.innerHTML += `<span class="err">❌ ${err.error?.message ?? 'Import failed. Check console for details.'}</span>`;
+  }
+
+  btn.disabled = false; btn.textContent = 'Import All Data';
+}
+
+function resetImport() {
+  parsed = null;
+  document.getElementById('preview-card').classList.add('hidden');
+  document.getElementById('results-card').classList.add('hidden');
+  document.getElementById('file-input').value = '';
+}
+
+// ─── Template download ────────────────────────────────────────────────────────
+function downloadTemplate() {
+  const wb = XLSX.utils.book_new();
+
+  const addSheet = (name, headers, example) => {
+    const ws = XLSX.utils.aoa_to_sheet([headers, example]);
+    ws['!cols'] = headers.map(() => ({ wch: 20 }));
+    XLSX.utils.book_append_sheet(wb, ws, name);
+  };
+
+  addSheet('Colleges',
+    ['slug','name','short_name','city','state','ownership','naac_grade','nirf_rank_overall','nirf_rank_engineering','nirf_rank_management','nirf_rank_medical','avg_rating','min_fee_inr','max_fee_inr','avg_package_lpa','highest_package_lpa','established_year','website','tags','is_published'],
+    ['iit-example','Example Institute of Technology','EIT','Mumbai','Maharashtra','govt','A++',10,8,'','',4.5,200000,500000,15,80,1958,'example.ac.in','engineering,govt,nirf-top50','yes']
+  );
+  addSheet('Exams',
+    ['slug','name','stream','score_type'],
+    ['jee-main','JEE Main','engineering','rank']
+  );
+  addSheet('Courses',
+    ['slug','name','degree_level','stream','duration_months'],
+    ['btech-cs','B.Tech Computer Science','undergraduate','engineering',48]
+  );
+  addSheet('Cutoffs',
+    ['college_slug','course_slug','exam_slug','year','round','category','quota','gender','opening_value','closing_value'],
+    ['iit-example','btech-cs','jee-main',2024,1,'general','all_india','gender_neutral',1000,5000]
+  );
+
+  XLSX.writeFile(wb, 'eduquest_import_template.xlsx');
+}
+
+// ─── API helpers ──────────────────────────────────────────────────────────────
+function api(path, body) {
+  return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+}
+function authApi(path, body) {
+  return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(body) });
+}
+</script>
+</body>
+</html>
